@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+*,
+*::after,
+*::before {
+  font-family: monospace;
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+  /* outline: solid 1px red; */
+}
+
+.scroll_bar::-webkit-scrollbar {
+  width: 10px;
+  background-color: #424242;
+}
+
+.scroll_bar::-webkit-scrollbar-thumb {
+  background-color: #686868;
+}
+
+
+.tooltip {
+  @apply invisible absolute;
+}
+
+.has-tooltip:hover .tooltip {
+  @apply visible z-50;
+}
