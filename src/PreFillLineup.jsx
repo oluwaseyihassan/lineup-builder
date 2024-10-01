@@ -7,6 +7,8 @@ const PreFillLineup = ({
   setTeamId,
   lineupNotFound,
   setSwitchMode,
+  setRecentTeams,
+  recentTeams,
 }) => {
   const [showSearch, setShowSearch] = useState(false);
   const [searchParam, setSearchParam] = useState("");
@@ -24,6 +26,11 @@ const PreFillLineup = ({
             .filter((d) => d.title.key === "teams")
             .map((s) => s.suggestions)[0]
         );
+        console.log(
+          data
+            .filter((d) => d.title.key === "teams")
+            .map((s) => s.suggestions)[0]
+        );
       } catch (error) {
         console.log(error);
       }
@@ -35,6 +42,23 @@ const PreFillLineup = ({
 
     if (!lineupNotFound) {
       setTeamId(e.target.dataset.id);
+    }
+
+    console.log(e.target.id);
+    
+
+    const newRecentTeam = {
+      id: e.target.dataset.id,
+      name: e.target.dataset.name,
+      leagueName: e.target.dataset.leagueName,
+    };
+    console.log(newRecentTeam);
+    
+    const isPlayerAlreadyAdded = recentTeams.some(
+      (p) => p.id === newRecentTeam.id
+    );
+    if (!isPlayerAlreadyAdded) {
+      setRecentTeams([...recentTeams, newRecentTeam]);
     }
   };
   return (
@@ -65,6 +89,55 @@ const PreFillLineup = ({
           } absolute bg-[#1D1D1D] shadow-md w-[90%] overflow-y-scroll scroll_bar max-h-[500px] mt-1 py-2 rounded-xl`}
         >
           <div className="">
+            {searchParam.length == 0 && (
+              <div>
+                {recentTeams.map((r) => (
+                  <button
+                    className="flex gap-4 items-center w-full cursor-pointer hover:bg-[#2C2C2C] px-4 py-2"
+                    onClick={(e) => {
+                      handleClick(e);
+                      setShowSearch(false);
+                    }}
+                    data-id={r.id}
+                    data-name={r.name}
+                    data-leagueName={r.leagueName}
+                    key={r.id}
+                  >
+                    <img
+                      className="w-5 h-5"
+                      src={`https://images.fotmob.com/image_resources/logo/teamlogo/${r.id}_xsmall.png`}
+                      alt=""
+                      data-id={r.id}
+                      data-name={r.name}
+                      data-leagueName={r.leagueName}
+                    />
+                    <div
+                      className=" flex flex-col text-left"
+                      data-id={r.id}
+                      data-name={r.name}
+                      data-leagueName={r.leagueName}
+                    >
+                      <div
+                        className=" text-[12px]"
+                        data-id={r.id}
+                        data-name={r.name}
+                        data-leagueName={r.leagueName}
+                      >
+                        {r.name}
+                      </div>
+                      <div
+                        className=" text-[10px] text-[#9F9F9F]"
+                        data-id={r.id}
+                        data-name={r.name}
+                        data-leagueName={r.leagueName}
+                      >
+                        {r.leagueName}
+                      </div>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            )}
             {searchResult?.length > 1 && <div>Search for Teams</div>}
             {searchResult?.map((s) => (
               <button
@@ -74,6 +147,8 @@ const PreFillLineup = ({
                   setShowSearch(false);
                 }}
                 data-id={s.id}
+                data-name={s.name}
+                data-leagueName={s.leagueName}
                 key={s.id}
               >
                 <img
@@ -81,12 +156,29 @@ const PreFillLineup = ({
                   src={`https://images.fotmob.com/image_resources/logo/teamlogo/${s.id}_xsmall.png`}
                   alt=""
                   data-id={s.id}
+                  data-name={s.name}
+                  data-leagueName={s.leagueName}
                 />
-                <div className=" flex flex-col text-left" data-id={s.id}>
-                  <div className=" text-[12px]" data-id={s.id}>
+                <div
+                  className=" flex flex-col text-left"
+                  data-id={s.id}
+                  data-name={s.name}
+                  data-leagueName={s.leagueName}
+                >
+                  <div
+                    className=" text-[12px]"
+                    data-id={s.id}
+                    data-name={s.name}
+                    data-leagueName={s.leagueName}
+                  >
                     {s.name}
                   </div>
-                  <div className=" text-[10px] text-[#9F9F9F]" data-id={s.id}>
+                  <div
+                    className=" text-[10px] text-[#9F9F9F]"
+                    data-id={s.id}
+                    data-name={s.name}
+                    data-leagueName={s.leagueName}
+                  >
                     {s.leagueName}
                   </div>
                 </div>

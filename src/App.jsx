@@ -5,8 +5,6 @@ import "./App.css";
 import Player from "./assets/Player";
 import { data } from "./data";
 import LineUp from "./LineUp";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
 import SearchTeams from "./SearchTeams";
 import PreFillLineup from "./PreFillLineup";
 import SearchPlayer from "./SearchPlayer";
@@ -24,8 +22,11 @@ function App() {
   const [clickedPlayer, setClickedPlayer] = useState(null);
   const [errorAlert, setErrorAlert] = useState("");
   const [switchMode, setSwitchMode] = useState("custom");
+  const [loadingLineup, setLoadingLineup] = useState(false);
   const [lineupName, setLineupName] = useState("");
   const [clickedPlayerData, setClickedPlayerData] = useState({});
+  const [recentPlayers, setRecentPlayers] = useState([]);
+  const [recentTeams, setRecentTeams] = useState([]);
   const [customTeam, setCustomTeam] = useState([
     {
       id: null,
@@ -100,15 +101,19 @@ function App() {
 
   useEffect(() => {
     const getTeams = async () => {
+      setLoadingLineup(true);
       try {
         const fetchedTeams = await fetch(
           `https://lineup-builder-server.onrender.com/team?id=${teamId}`
         );
         const data = await fetchedTeams.json();
         setTeam(data.players);
+        console.log(data.players);
+
         setFormation(data.formation);
         setLineupNotFound(false);
         setSuggestedLineup(data.squad);
+        setLoadingLineup(false);
       } catch (error) {
         console.log(error);
         setLineupNotFound(true);
@@ -128,8 +133,8 @@ function App() {
         setPositions({
           0: "bottom-[4.5%] left-[50%] translate-x-[-50%] transition-all duration-500",
           1: "bottom-[25%] right-[10%] transition-all duration-500",
-          2: "bottom-[25%] right-[32%] transition-all duration-500",
-          3: "bottom-[25%] left-[32%] transition-all duration-500",
+          2: "bottom-[25%] right-[35%] transition-all duration-500",
+          3: "bottom-[25%] left-[35%] transition-all duration-500",
           4: "bottom-[25%] left-[10%] transition-all duration-500",
           5: "bottom-[50%] left-[50%] translate-x-[-50%] transition-all duration-500",
           6: "bottom-[50%] left-[20%] transition-all duration-500",
@@ -143,9 +148,9 @@ function App() {
         setPositions({
           0: "bottom-[4%] left-[50%] translate-x-[-50%] transition-all duration-500",
           4: "bottom-[25%] left-[10%] transition-all duration-500",
-          3: "bottom-[25%] left-[32%] transition-all duration-500",
+          3: "bottom-[25%] left-[35%] transition-all duration-500",
           1: "bottom-[25%] right-[10%] transition-all duration-500",
-          2: "bottom-[25%] right-[32%] transition-all duration-500",
+          2: "bottom-[25%] right-[35%] transition-all duration-500",
           6: "bottom-[50%] left-[10%] transition-all duration-500",
           5: "bottom-[50%] left-[32%] transition-all duration-500",
           8: "bottom-[50%] right-[10%] transition-all duration-500",
@@ -157,25 +162,25 @@ function App() {
       case "4-2-3-1":
         setPositions({
           0: "bottom-[4%] left-[50%] translate-x-[-50%] transition-all duration-500",
-          4: "bottom-[25%] left-[10%] transition-all duration-500",
-          3: "bottom-[25%] left-[32%] transition-all duration-500",
-          1: "bottom-[25%] right-[10%] transition-all duration-500",
-          2: "bottom-[25%] right-[32%] transition-all duration-500",
-          6: "bottom-[45%] left-[30%] transition-all duration-500",
-          5: "bottom-[45%] right-[30%] transition-all duration-500",
-          8: "bottom-[65%] left-[50%] translate-x-[-50%] transition-all duration-500",
-          9: "bottom-[65%] left-[15%] transition-all duration-500",
-          10: "bottom-[80%] left-[50%] translate-x-[-50%] transition-all duration-500",
-          7: "bottom-[65%] right-[15%] transition-all duration-500",
+          4: "sm:top-[66%] top-[62.5%] left-[10%] transition-all duration-500",
+          3: "sm:top-[66%] top-[62.5%] left-[35%] transition-all duration-500",
+          1: "sm:top-[66%] top-[62.5%] right-[10%] transition-all duration-500",
+          2: "sm:top-[66%] top-[62.5%] right-[35%] transition-all duration-500",
+          6: "sm:top-[46%] top-[42.5%] left-[30%] transition-all duration-500",
+          5: "sm:top-[46%] top-[42.5%] right-[30%] transition-all duration-500",
+          8: "sm:top-[26%] top-[22.5%] left-[50%] translate-x-[-50%] transition-all duration-500",
+          9: "sm:top-[26%] top-[22.5%] left-[15%] transition-all duration-500",
+          10: "sm:top-[11%] top-[8.5%] left-[50%] translate-x-[-50%] transition-all duration-500",
+          7: "sm:top-[26%] top-[22.5%] right-[15%] transition-all duration-500",
         });
         break;
       case "4-1-4-1":
         setPositions({
           0: "bottom-[4%] left-[50%] translate-x-[-50%] transition-all duration-500",
           4: "bottom-[25%] left-[10%] transition-all duration-500",
-          3: "bottom-[25%] left-[32%] transition-all duration-500",
+          3: "bottom-[25%] left-[35%] transition-all duration-500",
           1: "bottom-[25%] right-[10%] transition-all duration-500",
-          2: "bottom-[25%] right-[32%] transition-all duration-500",
+          2: "bottom-[25%] right-[35%] transition-all duration-500",
           6: "bottom-[62%] left-[32%] transition-all duration-500",
           5: "bottom-[43%] left-[50%] translate-x-[-50%] transition-all duration-500",
           8: "bottom-[62%] right-[32%] transition-all duration-500",
@@ -188,8 +193,8 @@ function App() {
         setPositions({
           0: "bottom-[4%] left-[50%] translate-x-[-50%] transition-all duration-500",
           1: "bottom-[25%] right-[10%] transition-all duration-500",
-          2: "bottom-[25%] right-[32%] transition-all duration-500",
-          3: "bottom-[25%] left-[32%] transition-all duration-500",
+          2: "bottom-[25%] right-[35%] transition-all duration-500",
+          3: "bottom-[25%] left-[35%] transition-all duration-500",
           4: "bottom-[25%] left-[10%] transition-all duration-500",
           5: "bottom-[45%] left-[50%] translate-x-[-50%] transition-all duration-500",
           6: "bottom-[45%] left-[20%] transition-all duration-500",
@@ -203,9 +208,9 @@ function App() {
         setPositions({
           0: "bottom-[4%] left-[50%] translate-x-[-50%] transition-all duration-500",
           4: "bottom-[25%] left-[10%] transition-all duration-500",
-          3: "bottom-[25%] left-[32%] transition-all duration-500",
+          3: "bottom-[25%] left-[35%] transition-all duration-500",
           1: "bottom-[25%] right-[10%] transition-all duration-500",
-          2: "bottom-[25%] right-[32%] transition-all duration-500",
+          2: "bottom-[25%] right-[35%] transition-all duration-500",
           6: "bottom-[52%] left-[22%] transition-all duration-500",
           5: "bottom-[40%] left-[50%] translate-x-[-50%] transition-all duration-500",
           8: "bottom-[80%] right-[30%] transition-all duration-500",
@@ -265,8 +270,56 @@ function App() {
     }
   }, [formation]);
 
-  const copyLink = () => {
-  }
+  const copyLink = () => {};
+
+  const downloadImage = () => {
+    // const data = document.getElementById("formation-image").toDataURL("image/png");
+    // const a = document.createElement('a')
+    // a.href = data;
+    // a.download = "lineup.png";
+    // a.click();
+  };
+  useEffect(() => {
+    const storedRecentPlayers = JSON.parse(
+      window.localStorage.getItem("LINEUP_RECENT_PLAYERS")
+    );
+    if (storedRecentPlayers) {
+      setRecentPlayers(storedRecentPlayers);
+      console.log(storedRecentPlayers);
+    }
+    console.log(recentPlayers);
+  }, []);
+
+  useEffect(() => {
+    console.log(recentPlayers);
+    if (recentPlayers.length > 0) {
+      window.localStorage.setItem(
+        "LINEUP_RECENT_PLAYERS",
+        JSON.stringify(recentPlayers)
+      );
+    }
+  }, [recentPlayers]);
+
+  useEffect(() => {
+    const storedRecentTeams = JSON.parse(
+      window.localStorage.getItem("LINEUP_RECENT_TEAMS")
+    );
+    if (storedRecentTeams) {
+      setRecentTeams(storedRecentTeams);
+      console.log(storedRecentTeams);
+    }
+    console.log(recentTeams);
+  }, []);
+
+  useEffect(() => {
+    console.log(recentTeams);
+    if (recentTeams.length > 0) {
+      window.localStorage.setItem(
+        "LINEUP_RECENT_TEAMS",
+        JSON.stringify(recentTeams)
+      );
+    }
+  }, [recentTeams]);
 
   const clearLineUp = () => {
     setSwitchMode("custom");
@@ -388,7 +441,7 @@ function App() {
   };
 
   return (
-    <div className="  h-full overflow-hidden grid md:grid-cols-3 lg:grid-cols-4 max-w-[1280px] m-auto gap-4 px-4 my-10">
+    <div className="  h-full overflow-hidden flex flex-col-reverse md:grid md:grid-cols-3 lg:grid-cols-4 max-w-[1280px] m-auto gap-4 sm:px-4 my-10">
       {/* <div className=" absolute bottom-0 bg-red-500">{errorAlert}</div> */}
 
       <div className=" col-span-1 rounded-xl overflow-hidden">
@@ -406,6 +459,8 @@ function App() {
           setPositions={setPositions}
           clickedPlayerData={clickedPlayerData}
           suggestedLineup={suggestedLineup}
+          setRecentPlayers={setRecentPlayers}
+          recentPlayers={recentPlayers}
         />
         <div
           className={`${
@@ -420,6 +475,8 @@ function App() {
           setTeamId={setTeamId}
           lineupNotFound={lineupNotFound}
           setSwitchMode={setSwitchMode}
+          setRecentTeams={setRecentTeams}
+          recentTeams={recentTeams}
         />
       </div>
       <div className=" col-span-2 rounded-xl overflow-hidden bg-[#1d1d1d]">
@@ -476,10 +533,18 @@ function App() {
             Clear Lineup
           </button>
         </div>
-        <div className=" bg-[#2C2C2C] m-auto h-[700px] relative col-span-2">
-          <div className="absolute h-[52px] w-32 rounded-tl rounded-tr border-4 border-b-0 border-solid border-[#343434] bottom-0 left-[50%] translate-x-[-50%] z-20"></div>
-          <div className="absolute h-32 w-72 rounded-tl rounded-tr border-4 border-b-0 border-solid border-[#343434] bottom-0 left-[50%] translate-x-[-50%] bg-[#2C2C2C] z-10"></div>
-          <div className="absolute h-[150px] w-32 rounded-t-full border-4 border-b-0 border-solid border-[#343434] bottom-0 left-[50%] translate-x-[-50%]"></div>
+        <div
+          className={`bg-[#2C2C2C] m-auto sm:h-[700px] h-[500px] relative col-span-2`}
+        >
+          {loadingLineup && (
+            <div
+              className={` w-full h-full absolute bg-black opacity-20 z-[100]`}
+            ></div>
+          )}
+
+          <div className="absolute h-[44px] sm:h-[52px] w-28 sm:w-32 rounded-tl-lg rounded-tr-lg border-4 border-b-0 border-solid border-[#343434] bottom-0 left-[50%] translate-x-[-50%] z-20"></div>
+          <div className="absolute h-28 sm:h-32 w-60 sm:w-72 rounded-tl-lg rounded-tr-lg border-4 border-b-0 border-solid border-[#343434] bottom-0 left-[50%] translate-x-[-50%] bg-[#2C2C2C] z-10"></div>
+          <div className="absolute h-[128px] sm:h-[150px] w-32 rounded-t-full border-4 border-b-0 border-solid border-[#343434] bottom-0 left-[50%] translate-x-[-50%]"></div>
           {switchMode === "fetched" && team ? (
             <>
               {team?.map((t, index) => (
@@ -533,18 +598,38 @@ function App() {
           />
         </div>
         <div className=" bg-[#2c2c2c] h-[1px] w-full"></div>
-        <div className=" p-4 flex justify-center gap-4">
-          <button className=" px-3 py-1 bg-[#60df6e] rounded-lg">
-            Download Image
-          </button>
-          <button className=" px-3 py-1 bg-[#60df6e] rounded-lg" onClick={copyLink}>
-            Copy Link
-          </button>
-        </div>
+        {(customTeam[0].id &&
+          customTeam[1].id &&
+          customTeam[2].id &&
+          customTeam[3].id &&
+          customTeam[4].id &&
+          customTeam[5].id &&
+          customTeam[6].id &&
+          customTeam[7].id &&
+          customTeam[8].id &&
+          customTeam[9].id &&
+          customTeam[10].id) ||
+          (switchMode == "fetched" && (
+            <div className=" p-4 flex justify-center gap-4">
+              <button
+                className=" px-3 py-1 bg-[#60df6e] rounded-lg"
+                onClick={downloadImage}
+                id="formation-image"
+              >
+                Download Image
+              </button>
+              <button
+                className=" px-3 py-1 bg-[#60df6e] rounded-lg"
+                onClick={copyLink}
+              >
+                Copy Link
+              </button>
+            </div>
+          ))}
       </div>
       <div className=" col-span-1 px-4 py-4 text-white bg-[#1d1d1d] h-fit rounded-xl hidden lg:block">
-        <h3 className=" font-bold text-lg text-center mb-2">Build your XI</h3>
-        <p className=" px-2 text-xs mb-3">
+        <h3 className=" font-bold text-lg text-center mb-5">Build your XI</h3>
+        <p className=" px-2 text-xs mb-4">
           Build your dream XI, pick your team’s next lineup, or plan your
           transfer window.
         </p>

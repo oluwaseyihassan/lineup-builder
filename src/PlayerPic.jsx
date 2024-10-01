@@ -72,20 +72,20 @@ const PlayerPic = ({
       onDragEnter={handleDragEnter}
       onDrag={handleDrag}
       //   onMouseOver={handleMouseOver}
-      className={` transition-opacity gap-1  duration-200 after:bg-transparent after:h-full after:w-full after:absolute after:top-0 flex flex-col items-center focus:opacity-30 hover:opacity-30 outline-none`}
+      className={` transition-opacity gap-1  duration-200 after:bg-transparent after:h-full after:w-full after:absolute after:top-0 flex flex-col items-center focus:opacity-30 hover:opacity-30 outline-none justify-center`}
     >
-      <div className=" h-[40px] w-[40px] justify-center rounded-full bg-[#383838] flex items-end overflow-hidden">
+      <div className=" h-[32px] sm:h-[40px] sm:w-[40px] w-[32px] justify-center rounded-full bg-[#383838] flex items-end overflow-hidden">
         <img
           src={`https://images.fotmob.com/image_resources/playerimages/${p.id}.png`}
           onError={(e) => (e.target.src = imgPlaceholder)}
           alt=""
-          className=" h-9  bottom-0"
+          className=" h-7 sm:h-9  bottom-0"
           data-pos={pos}
           draggable={false}
         />
       </div>
       <div
-        className={`text-[12px] text-center text-white has-tooltip z-50`}
+        className={`text-[12px] text-center text-white has-tooltip z-50 max-w-[50px] flex justify-center flex-wrap`}
         data-pos={pos}
       >
         {p.name.split(" ")[p.name.split(" ").length - 1]}

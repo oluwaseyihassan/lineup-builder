@@ -17,6 +17,8 @@ const SearchPlayer = ({
   setPositions,
   clickedPlayerData,
   suggestedLineup,
+  setRecentPlayers,
+  recentPlayers,
 }) => {
   const [searchParam, setSearchParam] = useState("");
   const [searchResult, setSearchResult] = useState([]);
@@ -29,7 +31,7 @@ const SearchPlayer = ({
         const data = await response.json();
         setSearchResult(
           data
-            .filter((d) => d.title.key === "players")
+            ?.filter((d) => d.title.key === "players")
             .map((s) => s.suggestions)[0]
             .filter((s) => s.isCoach === false)
         );
@@ -47,6 +49,21 @@ const SearchPlayer = ({
       id: e.target.dataset.id,
       idx: clickedPlayer,
     };
+
+    const newRecentPlayers = {
+      name: e.target.dataset.name,
+      id: e.target.dataset.id,
+      idx: clickedPlayer,
+      teamName: e.target.dataset.teamname,
+    };
+
+    const isPlayerAlreadyAdded = recentPlayers.some(
+      (p) => p.id === newRecentPlayers.id
+    );
+
+    if (!isPlayerAlreadyAdded) {
+      setRecentPlayers([...recentPlayers, newRecentPlayers]);
+    }
 
     if (switchMode === "custom") {
       const updatedTeam = [...customTeam];
@@ -93,7 +110,7 @@ const SearchPlayer = ({
     <div
       className={`${
         showSearch ? "block" : "hidden"
-      } absolute left-[50%] translate-x-[-50%] top-[50%] translate-y-[-50%] z-40 max-h-[500px] bg-[#1D1D1D]   rounded-md mt-1 py-2`}
+      } fixed left-[50%] translate-x-[-50%] top-[50%] translate-y-[-50%] z-40 max-h-[500px] bg-[#1D1D1D]   rounded-md mt-1 py-4`}
     >
       <div className=" px-2 flex bg-[#2C2C2C] rounded-full w-[94%] py-1 items-center m-auto">
         <SearchSvg />
@@ -121,6 +138,7 @@ const SearchPlayer = ({
             <div className=" text-[12px]">Suggested Players</div>
           </div>
         )}
+
         {suggestedLineup && searchParam == "" && switchMode == "fetched" && (
           <div>
             {suggestedLineup.players.map((s) => (
@@ -130,11 +148,13 @@ const SearchPlayer = ({
                 data-name={s.name}
                 data-id={s.id}
                 onClick={handleClick}
+                data-teamName={s.teamName}
               >
                 <div
                   className=" h-[24px] w-[24px] justify-center rounded-full bg-[#383838] flex items-end overflow-hidden"
                   data-name={s.name}
                   data-id={s.id}
+                  data-teamName={s.teamName}
                 >
                   <img
                     className="w-5 h-5"
@@ -143,16 +163,19 @@ const SearchPlayer = ({
                     alt=""
                     data-name={s.name}
                     data-id={s.id}
+                    data-teamName={s.teamName}
                   />
                 </div>
                 <div
                   className=" flex flex-col text-left"
                   data-name={s.name}
                   data-id={s.id}
+                  data-teamName={s.teamName}
                 >
                   <div
                     data-name={s.name}
                     data-id={s.id}
+                    data-teamName={s.teamName}
                     className=" text-[12px]"
                   >
                     {s.name}
@@ -160,6 +183,7 @@ const SearchPlayer = ({
                   <div
                     data-name={s.name}
                     data-id={s.id}
+                    data-teamName={s.teamName}
                     className=" text-[10px] text-[#9F9F9F]"
                   >
                     {s.teamName}
@@ -167,6 +191,67 @@ const SearchPlayer = ({
                 </div>
               </button>
             ))}
+          </div>
+        )}
+        {searchParam == "" && (
+          <div>
+            {recentPlayers.length > 0 && (
+              <div className=" text-[12px] px-4">Recent</div>
+            )}
+
+            <div>
+              {recentPlayers.map((r) => (
+                <button
+                  key={r.id}
+                  className=" flex cursor-pointer gap-3 py-2 hover:bg-[#2C2C2C] outline-none focus:bg-[#2C2C2C] w-full px-4 items-center"
+                  data-name={r.name}
+                  data-id={r.id}
+                  onClick={handleClick}
+                  data-teamName={r.teamName}
+                >
+                  <div
+                    className=" h-[24px] w-[24px] justify-center rounded-full bg-[#383838] flex items-end overflow-hidden"
+                    data-name={r.name}
+                    data-id={r.id}
+                    data-teamName={r.teamName}
+                  >
+                    <img
+                      className="w-5 h-5"
+                      src={`https://images.fotmob.com/image_resources/playerimages/${r.id}.png`}
+                      onError={(e) => (e.target.src = imgPlaceholder)}
+                      alt=""
+                      data-name={r.name}
+                      data-id={r.id}
+                      data-teamName={r.teamName}
+                    />
+                  </div>
+                  <div
+                    className=" flex flex-col text-left"
+                    data-name={r.name}
+                    data-id={r.id}
+                    data-teamName={r.teamName}
+                  >
+                    <div
+                      data-name={r.name}
+                      data-id={r.id}
+                      data-teamName={r.teamName}
+                      className=" text-[12px]"
+                    >
+                      {r.name}
+                    </div>
+
+                    <div
+                      data-name={r.name}
+                      data-id={r.id}
+                      data-teamName={r.teamName}
+                      className=" text-[10px] text-[#9F9F9F]"
+                    >
+                      {r.teamName}
+                    </div>
+                  </div>
+                </button>
+              ))}
+            </div>
           </div>
         )}
         {searchParam != "" &&
@@ -177,11 +262,13 @@ const SearchPlayer = ({
               data-name={s.name}
               data-id={s.id}
               onClick={handleClick}
+              data-teamName={s.teamName}
             >
               <div
                 className=" h-[24px] w-[24px] justify-center rounded-full bg-[#383838] flex items-end overflow-hidden"
                 data-name={s.name}
                 data-id={s.id}
+                data-teamName={s.teamName}
               >
                 <img
                   className="w-5 h-5"
@@ -190,20 +277,28 @@ const SearchPlayer = ({
                   alt=""
                   data-name={s.name}
                   data-id={s.id}
+                  data-teamName={s.teamName}
                 />
               </div>
               <div
                 className=" flex flex-col text-left"
                 data-name={s.name}
                 data-id={s.id}
+                data-teamName={s.teamName}
               >
-                <div data-name={s.name} data-id={s.id} className=" text-[12px]">
+                <div
+                  data-name={s.name}
+                  data-id={s.id}
+                  data-teamName={s.teamName}
+                  className=" text-[12px]"
+                >
                   {s.name}
                 </div>
 
                 <div
                   data-name={s.name}
                   data-id={s.id}
+                  data-teamName={s.teamName}
                   className=" text-[10px] text-[#9F9F9F]"
                 >
                   {s.teamName}
