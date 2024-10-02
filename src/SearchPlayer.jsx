@@ -148,13 +148,13 @@ const SearchPlayer = ({
                 data-name={s.name}
                 data-id={s.id}
                 onClick={handleClick}
-                data-teamName={s.teamName}
+                data-teamname={s.teamName}
               >
                 <div
                   className=" h-[24px] w-[24px] justify-center rounded-full bg-[#383838] flex items-end overflow-hidden"
                   data-name={s.name}
                   data-id={s.id}
-                  data-teamName={s.teamName}
+                  data-teamname={s.teamName}
                 >
                   <img
                     className="w-5 h-5"
@@ -163,19 +163,19 @@ const SearchPlayer = ({
                     alt=""
                     data-name={s.name}
                     data-id={s.id}
-                    data-teamName={s.teamName}
+                    data-teamname={s.teamName}
                   />
                 </div>
                 <div
                   className=" flex flex-col text-left"
                   data-name={s.name}
                   data-id={s.id}
-                  data-teamName={s.teamName}
+                  data-teamname={s.teamName}
                 >
                   <div
                     data-name={s.name}
                     data-id={s.id}
-                    data-teamName={s.teamName}
+                    data-teamname={s.teamName}
                     className=" text-[12px]"
                   >
                     {s.name}
@@ -183,7 +183,7 @@ const SearchPlayer = ({
                   <div
                     data-name={s.name}
                     data-id={s.id}
-                    data-teamName={s.teamName}
+                    data-teamname={s.teamName}
                     className=" text-[10px] text-[#9F9F9F]"
                   >
                     {s.teamName}
@@ -207,13 +207,13 @@ const SearchPlayer = ({
                   data-name={r.name}
                   data-id={r.id}
                   onClick={handleClick}
-                  data-teamName={r.teamName}
+                  data-teamname={r.teamName}
                 >
                   <div
                     className=" h-[24px] w-[24px] justify-center rounded-full bg-[#383838] flex items-end overflow-hidden"
                     data-name={r.name}
                     data-id={r.id}
-                    data-teamName={r.teamName}
+                    data-teamname={r.teamName}
                   >
                     <img
                       className="w-5 h-5"
@@ -222,19 +222,19 @@ const SearchPlayer = ({
                       alt=""
                       data-name={r.name}
                       data-id={r.id}
-                      data-teamName={r.teamName}
+                      data-teamname={r.teamName}
                     />
                   </div>
                   <div
                     className=" flex flex-col text-left"
                     data-name={r.name}
                     data-id={r.id}
-                    data-teamName={r.teamName}
+                    data-teamname={r.teamName}
                   >
                     <div
                       data-name={r.name}
                       data-id={r.id}
-                      data-teamName={r.teamName}
+                      data-teamname={r.teamName}
                       className=" text-[12px]"
                     >
                       {r.name}
@@ -243,7 +243,7 @@ const SearchPlayer = ({
                     <div
                       data-name={r.name}
                       data-id={r.id}
-                      data-teamName={r.teamName}
+                      data-teamname={r.teamName}
                       className=" text-[10px] text-[#9F9F9F]"
                     >
                       {r.teamName}
@@ -262,13 +262,13 @@ const SearchPlayer = ({
               data-name={s.name}
               data-id={s.id}
               onClick={handleClick}
-              data-teamName={s.teamName}
+              data-teamname={s.teamName}
             >
               <div
                 className=" h-[24px] w-[24px] justify-center rounded-full bg-[#383838] flex items-end overflow-hidden"
                 data-name={s.name}
                 data-id={s.id}
-                data-teamName={s.teamName}
+                data-teamname={s.teamName}
               >
                 <img
                   className="w-5 h-5"
@@ -277,19 +277,19 @@ const SearchPlayer = ({
                   alt=""
                   data-name={s.name}
                   data-id={s.id}
-                  data-teamName={s.teamName}
+                  data-teamname={s.teamName}
                 />
               </div>
               <div
                 className=" flex flex-col text-left"
                 data-name={s.name}
                 data-id={s.id}
-                data-teamName={s.teamName}
+                data-teamname={s.teamName}
               >
                 <div
                   data-name={s.name}
                   data-id={s.id}
-                  data-teamName={s.teamName}
+                  data-teamname={s.teamName}
                   className=" text-[12px]"
                 >
                   {s.name}
@@ -298,7 +298,7 @@ const SearchPlayer = ({
                 <div
                   data-name={s.name}
                   data-id={s.id}
-                  data-teamName={s.teamName}
+                  data-teamname={s.teamName}
                   className=" text-[10px] text-[#9F9F9F]"
                 >
                   {s.teamName}

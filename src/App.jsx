@@ -9,6 +9,10 @@ import SearchTeams from "./SearchTeams";
 import PreFillLineup from "./PreFillLineup";
 import SearchPlayer from "./SearchPlayer";
 import Logo from "./assets/Logo";
+import { Analytics } from "@vercel/analytics/react"
+import { inject } from "@vercel/analytics";
+
+inject()
 
 function App() {
   const [teamId, setTeamId] = useState(null);

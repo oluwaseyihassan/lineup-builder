@@ -50,7 +50,7 @@ const PreFillLineup = ({
     const newRecentTeam = {
       id: e.target.dataset.id,
       name: e.target.dataset.name,
-      leagueName: e.target.dataset.leagueName,
+      leagueName: e.target.dataset.leaguename,
     };
     console.log(newRecentTeam);
     
@@ -61,6 +61,13 @@ const PreFillLineup = ({
       setRecentTeams([...recentTeams, newRecentTeam]);
     }
   };
+  const handleClick2 = (e) => {
+    setSwitchMode("fetched");
+
+    if (!lineupNotFound) {
+      setTeamId(e.target.dataset.id);
+    }
+  }
   return (
     <div className=" bg-[#1D1D1D] py-3 text-white rounded-b-xl">
       <h3 className=" text-lg px-3">Pre-fill Lineup</h3>
@@ -91,6 +98,7 @@ const PreFillLineup = ({
           <div className="">
             {searchParam.length == 0 && (
               <div>
+                <h3 className=" px-3">Recent</h3>
                 {recentTeams.map((r) => (
                   <button
                     className="flex gap-4 items-center w-full cursor-pointer hover:bg-[#2C2C2C] px-4 py-2"
@@ -100,7 +108,7 @@ const PreFillLineup = ({
                     }}
                     data-id={r.id}
                     data-name={r.name}
-                    data-leagueName={r.leagueName}
+                    data-leaguename={r.leagueName}
                     key={r.id}
                   >
                     <img
@@ -109,19 +117,19 @@ const PreFillLineup = ({
                       alt=""
                       data-id={r.id}
                       data-name={r.name}
-                      data-leagueName={r.leagueName}
+                      data-leaguename={r.leagueName}
                     />
                     <div
                       className=" flex flex-col text-left"
                       data-id={r.id}
                       data-name={r.name}
-                      data-leagueName={r.leagueName}
+                      data-leaguename={r.leagueName}
                     >
                       <div
                         className=" text-[12px]"
                         data-id={r.id}
                         data-name={r.name}
-                        data-leagueName={r.leagueName}
+                        data-leaguename={r.leagueName}
                       >
                         {r.name}
                       </div>
@@ -129,7 +137,7 @@ const PreFillLineup = ({
                         className=" text-[10px] text-[#9F9F9F]"
                         data-id={r.id}
                         data-name={r.name}
-                        data-leagueName={r.leagueName}
+                        data-leaguename={r.leagueName}
                       >
                         {r.leagueName}
                       </div>
@@ -148,7 +156,7 @@ const PreFillLineup = ({
                 }}
                 data-id={s.id}
                 data-name={s.name}
-                data-leagueName={s.leagueName}
+                data-leaguename={s.leagueName}
                 key={s.id}
               >
                 <img
@@ -157,19 +165,19 @@ const PreFillLineup = ({
                   alt=""
                   data-id={s.id}
                   data-name={s.name}
-                  data-leagueName={s.leagueName}
+                  data-leaguename={s.leagueName}
                 />
                 <div
                   className=" flex flex-col text-left"
                   data-id={s.id}
                   data-name={s.name}
-                  data-leagueName={s.leagueName}
+                  data-leaguename={s.leagueName}
                 >
                   <div
                     className=" text-[12px]"
                     data-id={s.id}
                     data-name={s.name}
-                    data-leagueName={s.leagueName}
+                    data-leaguename={s.leagueName}
                   >
                     {s.name}
                   </div>
@@ -177,7 +185,7 @@ const PreFillLineup = ({
                     className=" text-[10px] text-[#9F9F9F]"
                     data-id={s.id}
                     data-name={s.name}
-                    data-leagueName={s.leagueName}
+                    data-leaguename={s.leagueName}
                   >
                     {s.leagueName}
                   </div>
@@ -192,7 +200,7 @@ const PreFillLineup = ({
         Pre-fill with popular teams
       </h5>
       <div
-        onClick={handleClick}
+        onClick={handleClick2}
         className=" py-2 px-4 hover:bg-[#2C2C2C] cursor-pointer flex items-center gap-4"
         data-id="8633"
       >
@@ -207,7 +215,7 @@ const PreFillLineup = ({
         </div>
       </div>
       <div
-        onClick={handleClick}
+        onClick={handleClick2}
         className=" py-2 px-4 hover:bg-[#2C2C2C] cursor-pointer flex items-center gap-4"
         data-id="8634"
       >
@@ -222,7 +230,7 @@ const PreFillLineup = ({
         </div>
       </div>
       <div
-        onClick={handleClick}
+        onClick={handleClick2}
         className=" py-2 px-4 hover:bg-[#2C2C2C] cursor-pointer flex items-center gap-4"
         data-id="10260"
       >
@@ -237,7 +245,7 @@ const PreFillLineup = ({
         </div>
       </div>
       <div
-        onClick={handleClick}
+        onClick={handleClick2}
         className=" py-2 px-4 hover:bg-[#2C2C2C] cursor-pointer flex items-center gap-4"
         data-id="8650"
       >
@@ -252,7 +260,7 @@ const PreFillLineup = ({
         </div>
       </div>
       <div
-        onClick={handleClick}
+        onClick={handleClick2}
         className=" py-2 px-4 hover:bg-[#2C2C2C] cursor-pointer flex items-center gap-4"
         data-id="9825"
       >
@@ -267,7 +275,7 @@ const PreFillLineup = ({
         </div>
       </div>
       <div
-        onClick={handleClick}
+        onClick={handleClick2}
         className=" py-2 px-4 hover:bg-[#2C2C2C] cursor-pointer flex items-center gap-4"
         data-id="8455"
       >
@@ -282,7 +290,7 @@ const PreFillLineup = ({
         </div>
       </div>
       <div
-        onClick={handleClick}
+        onClick={handleClick2}
         className=" py-2 px-4 hover:bg-[#2C2C2C] cursor-pointer flex items-center gap-4"
         data-id="8586"
       >
@@ -297,7 +305,7 @@ const PreFillLineup = ({
         </div>
       </div>
       <div
-        onClick={handleClick}
+        onClick={handleClick2}
         className=" py-2 px-4 hover:bg-[#2C2C2C] cursor-pointer flex items-center gap-4"
         data-id="8456"
       >
@@ -312,7 +320,7 @@ const PreFillLineup = ({
         </div>
       </div>
       <div
-        onClick={handleClick}
+        onClick={handleClick2}
         className=" py-2 px-4 hover:bg-[#2C2C2C] cursor-pointer flex items-center gap-4"
         data-id="9823"
       >
@@ -327,7 +335,7 @@ const PreFillLineup = ({
         </div>
       </div>
       <div
-        onClick={handleClick}
+        onClick={handleClick2}
         className=" py-2 px-4 hover:bg-[#2C2C2C] cursor-pointer flex items-center gap-4"
         data-id="10261"
       >
