@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
@@ -9,14 +9,16 @@ import SearchTeams from "./SearchTeams";
 import PreFillLineup from "./PreFillLineup";
 import SearchPlayer from "./SearchPlayer";
 import Logo from "./assets/Logo";
-import { Analytics } from "@vercel/analytics/react"
+import { Analytics } from "@vercel/analytics/react";
 import { inject } from "@vercel/analytics";
+import CustomFormation from "./CustomFormation";
+import { useNavigate } from "react-router-dom";
+import html2canvas from "html2canvas";
 
-inject()
+inject();
 
 function App() {
   const [teamId, setTeamId] = useState(null);
-  const [team, setTeam] = useState([]);
   const [suggestedLineup, setSuggestedLineup] = useState({
     players: [],
     teamId: null,
@@ -31,6 +33,8 @@ function App() {
   const [clickedPlayerData, setClickedPlayerData] = useState({});
   const [recentPlayers, setRecentPlayers] = useState([]);
   const [recentTeams, setRecentTeams] = useState([]);
+  const [formation, setFormation] = useState("4-3-3");
+  const [team, setTeam] = useState([]);
   const [customTeam, setCustomTeam] = useState([
     {
       id: null,
@@ -88,7 +92,10 @@ function App() {
       idx: 10,
     },
   ]);
-  const [formation, setFormation] = useState("4-3-3");
+  const componentRef = useRef();
+ 
+
+
   const [positions, setPositions] = useState({
     0: "bottom-[4%] left-[50%] translate-x-[-50%] transition-all duration-500",
     1: "bottom-[25%] right-[10%] transition-all duration-500",
@@ -102,6 +109,7 @@ function App() {
     9: "bottom-[75%] left-[20%] transition-all duration-500",
     10: "bottom-[75%] left-[50%] translate-x-[-50%] transition-all duration-500",
   });
+
 
   useEffect(() => {
     const getTeams = async () => {
@@ -122,6 +130,7 @@ function App() {
         console.log(error);
         setLineupNotFound(true);
         setErrorAlert(error.error);
+        // setSwitchMode('custom')
       }
     };
     getTeams();
@@ -135,7 +144,7 @@ function App() {
     switch (formation) {
       case "4-3-3":
         setPositions({
-          0: "bottom-[4.5%] left-[50%] translate-x-[-50%] transition-all duration-500",
+          0: "bottom-[4%] left-[50%] translate-x-[-50%] transition-all duration-500",
           1: "bottom-[25%] right-[10%] transition-all duration-500",
           2: "bottom-[25%] right-[35%] transition-all duration-500",
           3: "bottom-[25%] left-[35%] transition-all duration-500",
@@ -275,13 +284,35 @@ function App() {
   }, [formation]);
 
   const copyLink = () => {};
+  const handleCapture = async () => {
+    html2canvas(componentRef.current)
+      .then((canvas) => {
+        const link = document.createElement("a");
+        link.href = canvas.toDataURL("image/png");
+        link.download = "component-image.png";
+        link.click();
+      })
+      .catch((err) => {
+        console.error("Error capturing the image:", err);
+      });
+  };
 
+  
+  // console.log(positions[7].replace(' transition-all duration-500',''));
+  
+  
+  
+  const downloadFormation = formation
+  
+  
   const downloadImage = () => {
-    // const data = document.getElementById("formation-image").toDataURL("image/png");
-    // const a = document.createElement('a')
-    // a.href = data;
-    // a.download = "lineup.png";
-    // a.click();
+    const teamURL = team?.map((t) => {
+      return `${t.name.split(" ")[t.name.split(" ").length - 1]+':'+t.id}`;
+    });
+    const customTeamURL = customTeam?.map((t) => {
+      return `${t.name.split(" ")[t.name.split(" ").length - 1]+':'+t.id}`;
+    });
+    window.open(`/team?players=${switchMode == 'fetched' ? teamURL : customTeamURL}&formation=${downloadFormation}${lineupName && `&lineupName=${lineupName}` }`, "_blank");
   };
   useEffect(() => {
     const storedRecentPlayers = JSON.parse(
@@ -445,7 +476,7 @@ function App() {
   };
 
   return (
-    <div className="  h-full overflow-hidden flex flex-col-reverse md:grid md:grid-cols-3 lg:grid-cols-4 max-w-[1280px] m-auto gap-4 sm:px-4 my-10">
+    <div className="  h-full overflow-hidden flex flex-col-reverse md:grid md:grid-cols-3 lg:grid-cols-4 max-w-[1280px] m-auto gap-4 sm:px-4 py-10 bg-black">
       {/* <div className=" absolute bottom-0 bg-red-500">{errorAlert}</div> */}
 
       <div className=" col-span-1 rounded-xl overflow-hidden">
@@ -485,8 +516,8 @@ function App() {
       </div>
       <div className=" col-span-2 rounded-xl overflow-hidden bg-[#1d1d1d]">
         <div className="  px-4 py-2 flex justify-between items-center">
-          <h1 className=" text-[24px] font-semibold text-white">
-            {lineupName ? lineupName : "LineUp Builder"}
+          <h1 className=" text-[24px] font-semibold text-white text-ellipsis max-w-[70%] overflow-hidden">
+            {lineupName ? `${lineupName}'s Lineup` : "LineUp Builder"}
           </h1>
           <Logo />
         </div>
@@ -539,6 +570,7 @@ function App() {
         </div>
         <div
           className={`bg-[#2C2C2C] m-auto sm:h-[700px] h-[500px] relative col-span-2`}
+          ref={componentRef}
         >
           {loadingLineup && (
             <div
@@ -549,13 +581,14 @@ function App() {
           <div className="absolute h-[44px] sm:h-[52px] w-28 sm:w-32 rounded-tl-lg rounded-tr-lg border-4 border-b-0 border-solid border-[#343434] bottom-0 left-[50%] translate-x-[-50%] z-20"></div>
           <div className="absolute h-28 sm:h-32 w-60 sm:w-72 rounded-tl-lg rounded-tr-lg border-4 border-b-0 border-solid border-[#343434] bottom-0 left-[50%] translate-x-[-50%] bg-[#2C2C2C] z-10"></div>
           <div className="absolute h-[128px] sm:h-[150px] w-32 rounded-t-full border-4 border-b-0 border-solid border-[#343434] bottom-0 left-[50%] translate-x-[-50%]"></div>
-          {switchMode === "fetched" && team ? (
+          { switchMode === 'fetched' && team ? (
             <>
               {team?.map((t, index) => (
                 <LineUp
                   style={positions[t.idx]}
                   pos={t.idx}
                   team={team}
+                  setTeam={setTeam}
                   positions={positions}
                   setPositions={setPositions}
                   setShowSearch={setShowSearch}
@@ -588,10 +621,11 @@ function App() {
             </>
           )}
         </div>
+        {/* <CustomFormation /> */}
         <div className=" p-4 flex justify-center">
           <input
             type="text"
-            className=" outline outline-1 outline-[#2c2c2c] px-3 py-2 rounded-full bg-[#2c2c2c] w-1/2 focus:outline-white text-white text-center"
+            className=" outline outline-1 outline-[#2c2c2c] px-3 py-2 rounded-full bg-[#2c2c2c] w-[90%] sm:w-1/2 focus:outline-white text-white text-center"
             placeholder="Enter lineup name"
             value={lineupName}
             onChange={(e) => {
@@ -602,7 +636,7 @@ function App() {
           />
         </div>
         <div className=" bg-[#2c2c2c] h-[1px] w-full"></div>
-        {(customTeam[0].id &&
+        {((customTeam[0].id &&
           customTeam[1].id &&
           customTeam[2].id &&
           customTeam[3].id &&
@@ -613,25 +647,25 @@ function App() {
           customTeam[8].id &&
           customTeam[9].id &&
           customTeam[10].id) ||
-          (switchMode == "fetched" && (
-            <div className=" p-4 flex justify-center gap-4">
-              <button
-                className=" px-3 py-1 bg-[#60df6e] rounded-lg"
-                onClick={downloadImage}
-                id="formation-image"
-              >
-                Download Image
-              </button>
-              <button
-                className=" px-3 py-1 bg-[#60df6e] rounded-lg"
-                onClick={copyLink}
-              >
-                Copy Link
-              </button>
-            </div>
-          ))}
+          switchMode == "fetched") && (
+          <div className=" p-4 flex justify-center gap-4">
+            <button
+              className=" px-3 py-1 bg-[#60df6e] rounded-lg"
+              onClick={downloadImage}
+              id="formation-image"
+            >
+              Download Image
+            </button>
+            <button
+              className=" px-3 py-1 bg-[#60df6e] rounded-lg"
+              onClick={handleCapture}
+            >
+              Copy Link
+            </button>
+          </div>
+        )}
       </div>
-      <div className=" col-span-1 px-4 py-4 text-white bg-[#1d1d1d] h-fit rounded-xl hidden lg:block">
+      <div className=" col-span-1 px-4 py-4 text-white bg-[#1D1D1D] h-fit rounded-xl hidden lg:block">
         <h3 className=" font-bold text-lg text-center mb-5">Build your XI</h3>
         <p className=" px-2 text-xs mb-4">
           Build your dream XI, pick your team’s next lineup, or plan your

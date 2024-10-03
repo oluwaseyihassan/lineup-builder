@@ -38,14 +38,12 @@ const PreFillLineup = ({
     getTeams();
   }, [searchParam]);
   const handleClick = (e) => {
-    setSwitchMode("fetched");
-
     if (!lineupNotFound) {
       setTeamId(e.target.dataset.id);
+      setSwitchMode("fetched");
+    } else {
+      setSwitchMode("custom");
     }
-
-    console.log(e.target.id);
-    
 
     const newRecentTeam = {
       id: e.target.dataset.id,
@@ -53,7 +51,7 @@ const PreFillLineup = ({
       leagueName: e.target.dataset.leaguename,
     };
     console.log(newRecentTeam);
-    
+
     const isPlayerAlreadyAdded = recentTeams.some(
       (p) => p.id === newRecentTeam.id
     );
@@ -62,12 +60,13 @@ const PreFillLineup = ({
     }
   };
   const handleClick2 = (e) => {
-    setSwitchMode("fetched");
-
     if (!lineupNotFound) {
       setTeamId(e.target.dataset.id);
+      setSwitchMode("fetched");
+    } else {
+      setSwitchMode("custom");
     }
-  }
+  };
   return (
     <div className=" bg-[#1D1D1D] py-3 text-white rounded-b-xl">
       <h3 className=" text-lg px-3">Pre-fill Lineup</h3>
@@ -93,9 +92,14 @@ const PreFillLineup = ({
         <div
           className={`${
             showSearch ? "block" : "hidden"
-          } absolute bg-[#1D1D1D] shadow-md w-[90%] overflow-y-scroll scroll_bar max-h-[500px] mt-1 py-2 rounded-xl`}
+          } absolute bg-[#1D1D1D] shadow-md w-[90%] overflow-y-scroll scroll_bar max-h-[500px] mt-1 py-2 rounded-xl min-h-[350px]`}
         >
           <div className="">
+            {searchParam.length > 0 && !searchResult && (
+              <div className=" px-3 opacity-50 h-fit text-center mt-10">
+                No Results Found for {searchParam}
+              </div>
+            )}
             {searchParam.length == 0 && (
               <div>
                 <h3 className=" px-3">Recent</h3>

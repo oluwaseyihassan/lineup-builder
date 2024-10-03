@@ -6,6 +6,7 @@ const PlayerPic = ({
   pos,
   data,
   team,
+  setTeam,
   positions,
   setPositions,
   setShowSearch,
@@ -32,12 +33,19 @@ const PlayerPic = ({
     const newPositions = { ...positions };
     const data1 = e.dataTransfer.getData("pos");
     const data2 = e.target.dataset.pos;
+    // setSwitchMode('custom')
 
     setPositions({
       ...positions,
       [data1]: positions[data2]?.replace("transition-all duration-500", ""),
       [data2]: positions[data1]?.replace("transition-all duration-500", ""),
     });
+    // setTeam([
+    //   ...team,
+    //   team[data1] = team[data2].idx,
+    //   team[data2] = team[data1].idx,
+    // ])
+    
   };
   const handleDragEnd = (e) => {
     e.target.classList.remove("opacity-30");
@@ -85,7 +93,7 @@ const PlayerPic = ({
         />
       </div>
       <div
-        className={`text-[12px] text-center text-white has-tooltip z-50 max-w-[50px] flex justify-center flex-wrap`}
+        className={` text-[7px] sm:text-[12px] text-center text-white has-tooltip z-50 flex justify-center flex-wrap`}
         data-pos={pos}
       >
         {p.name.split(" ")[p.name.split(" ").length - 1]}

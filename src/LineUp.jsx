@@ -6,6 +6,7 @@ const LineUp = ({
   style,
   pos,
   team,
+  setTeam,
   positions,
   setPositions,
   setShowSearch,
@@ -26,6 +27,7 @@ const LineUp = ({
             data={data}
             key={p.id}
             team={team}
+            setTeam={setTeam}
             positions={positions}
             setPositions={setPositions}
             setShowSearch={setShowSearch}
