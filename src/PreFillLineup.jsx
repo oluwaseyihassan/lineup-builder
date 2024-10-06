@@ -9,6 +9,7 @@ const PreFillLineup = ({
   setSwitchMode,
   setRecentTeams,
   recentTeams,
+  getTeams
 }) => {
   const [showSearch, setShowSearch] = useState(false);
   const [searchParam, setSearchParam] = useState("");
@@ -38,12 +39,15 @@ const PreFillLineup = ({
     getTeams();
   }, [searchParam]);
   const handleClick = (e) => {
+    getTeams(e.target.dataset.id);
     if (!lineupNotFound) {
       setTeamId(e.target.dataset.id);
       setSwitchMode("fetched");
     } else {
       setSwitchMode("custom");
     }
+
+
 
     const newRecentTeam = {
       id: e.target.dataset.id,
@@ -60,6 +64,7 @@ const PreFillLineup = ({
     }
   };
   const handleClick2 = (e) => {
+    getTeams(e.target.dataset.id)
     if (!lineupNotFound) {
       setTeamId(e.target.dataset.id);
       setSwitchMode("fetched");

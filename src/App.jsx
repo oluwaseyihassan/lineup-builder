@@ -17,273 +17,225 @@ import html2canvas from "html2canvas";
 
 inject();
 
-function App() {
-  const [teamId, setTeamId] = useState(null);
-  const [suggestedLineup, setSuggestedLineup] = useState({
-    players: [],
-    teamId: null,
-  });
+function App({
+  team,
+  setTeam,
+  customTeam,
+  setCustomTeam,
+  switchMode,
+  formation,
+  positions,
+  setPositions,
+  setFormation,
+  setSwitchMode,
+  lineupName,
+  setLineupName,
+  loadingLineup,
+  setLoadingLineup,
+  lineupNotFound,
+  setLineupNotFound,
+  suggestedLineup,
+  setSuggestedLineup,
+  teamId,
+  setTeamId,
+  errorAlert,
+  setErrorAlert,
+  finalFormation,
+  setFinalFormation,
+  getTeams,
+}) {
   const [showSearch, setShowSearch] = useState(false);
-  const [lineupNotFound, setLineupNotFound] = useState(false);
   const [clickedPlayer, setClickedPlayer] = useState(null);
-  const [errorAlert, setErrorAlert] = useState("");
-  const [switchMode, setSwitchMode] = useState("custom");
-  const [loadingLineup, setLoadingLineup] = useState(false);
-  const [lineupName, setLineupName] = useState("");
   const [clickedPlayerData, setClickedPlayerData] = useState({});
   const [recentPlayers, setRecentPlayers] = useState([]);
   const [recentTeams, setRecentTeams] = useState([]);
-  const [formation, setFormation] = useState("4-3-3");
-  const [team, setTeam] = useState([]);
-  const [customTeam, setCustomTeam] = useState([
-    {
-      id: null,
-      name: "",
-      idx: 0,
-    },
-    {
-      id: null,
-      name: "",
-      idx: 1,
-    },
-    {
-      id: null,
-      name: "",
-      idx: 2,
-    },
-    {
-      id: null,
-      name: "",
-      idx: 3,
-    },
-    {
-      id: null,
-      name: "",
-      idx: 4,
-    },
-    {
-      id: null,
-      name: "",
-      idx: 5,
-    },
-    {
-      id: null,
-      name: "",
-      idx: 6,
-    },
-    {
-      id: null,
-      name: "",
-      idx: 7,
-    },
-    {
-      id: null,
-      name: "",
-      idx: 8,
-    },
-    {
-      id: null,
-      name: "",
-      idx: 9,
-    },
-    {
-      id: null,
-      name: "",
-      idx: 10,
-    },
-  ]);
+
   const componentRef = useRef();
- 
 
-
-  const [positions, setPositions] = useState({
-    0: "bottom-[4%] left-[50%] translate-x-[-50%] transition-all duration-500",
-    1: "bottom-[25%] right-[10%] transition-all duration-500",
-    2: "bottom-[25%] right-[32%] transition-all duration-500",
-    3: "bottom-[25%] left-[32%] transition-all duration-500",
-    4: "bottom-[25%] left-[10%] transition-all duration-500",
-    5: "bottom-[50%] left-[50%] translate-x-[-50%] transition-all duration-500",
-    6: "bottom-[50%] left-[20%] transition-all duration-500",
-    7: "bottom-[75%] right-[20%] transition-all duration-500",
-    8: "bottom-[50%] right-[20%] transition-all duration-500",
-    9: "bottom-[75%] left-[20%] transition-all duration-500",
-    10: "bottom-[75%] left-[50%] translate-x-[-50%] transition-all duration-500",
-  });
-
-
-  useEffect(() => {
-    const getTeams = async () => {
-      setLoadingLineup(true);
-      try {
-        const fetchedTeams = await fetch(
-          `https://lineup-builder-server.onrender.com/team?id=${teamId}`
-        );
-        const data = await fetchedTeams.json();
-        setTeam(data.players);
-        console.log(data.players);
-
-        setFormation(data.formation);
-        setLineupNotFound(false);
-        setSuggestedLineup(data.squad);
-        setLoadingLineup(false);
-      } catch (error) {
-        console.log(error);
-        setLineupNotFound(true);
-        setErrorAlert(error.error);
-        // setSwitchMode('custom')
-      }
-    };
-    getTeams();
-  }, [teamId]);
+  const options = [
+    {
+      label: "4-3-3",
+      value: "4-3-3",
+    },
+    {
+      label: "4-4-2",
+      value: "4-4-2",
+    },
+    {
+      label: "4-2-3-1",
+      value: "4-2-3-1",
+    },
+    {
+      label: "4-1-4-1",
+      value: "4-1-4-1",
+    },
+    {
+      label: "4-3-2-1",
+      value: "4-3-2-1",
+    },
+    {
+      label: "4-1-2-1-2",
+      value: "4-1-2-1-2",
+    },
+    {
+      label: "3-4-3",
+      value: "3-4-3",
+    },
+    {
+      label: "3-5-2",
+      value: "3-5-2",
+    },
+    {
+      label: "3-2-4-1",
+      value: "3-2-4-1",
+    },
+    {
+      label: "5-3-2",
+      value: "5-3-2",
+    },
+    {
+      label: "5-4-1",
+      value: "5-4-1",
+    },
+    {
+      label: "4-5-1",
+      value: "4-5-1",
+    },
+    {
+      label: "4-4-1-1",
+      value: "4-4-1-1",
+    },
+    {
+      label: "4-2-2-2",
+      value: "4-2-2-2",
+    },
+    {
+      label: "4-2-4",
+      value: "4-2-4",
+    },
+    {
+      label: "3-4-2-1",
+      value: "3-4-2-1",
+    },
+    {
+      label: "3-4-1-2",
+      value: "3-4-1-2",
+    },
+    {
+      label: "4-3-1-2",
+      value: "4-3-1-2",
+    },
+    {
+      label: "5-2-3",
+      value: "5-2-3",
+    },
+    {
+      label: "5-2-2-1",
+      value: "5-2-2-1",
+    },
+    {
+      label: "4-2-1-3",
+      value: "4-2-1-3",
+    },
+    {
+      label: "4-1-2-3",
+      value: "4-1-2-3",
+    },
+    {
+      label: "3-1-4-2",
+      value: "3-1-4-2",
+    },
+    {
+      label: "4-1-3-2",
+      value: "4-1-3-2",
+    },
+    {
+      label: "4-1-2-2-1",
+      value: "4-1-2-2-1",
+    },
+    {
+      label: "3-3-4",
+      value: "3-3-4",
+    },
+    {
+      label: "3-3-3-1",
+      value: "3-3-3-1",
+    },
+    {
+      label: "5-3-1-1",
+      value: "5-3-1-1",
+    },
+    {
+      label: "3-3-2-2",
+      value: "3-3-2-2",
+    },
+    {
+      label: "3-5-1-1",
+      value: "3-5-1-1",
+    },
+    {
+      label: "2-3-2-3",
+      value: "2-3-2-3",
+    },
+  ];
 
   const changeFormation = (e) => {
     setFormation(e.target.value);
   };
 
-  useEffect(() => {
-    switch (formation) {
-      case "4-3-3":
-        setPositions({
-          0: "bottom-[4%] left-[50%] translate-x-[-50%] transition-all duration-500",
-          1: "bottom-[25%] right-[10%] transition-all duration-500",
-          2: "bottom-[25%] right-[35%] transition-all duration-500",
-          3: "bottom-[25%] left-[35%] transition-all duration-500",
-          4: "bottom-[25%] left-[10%] transition-all duration-500",
-          5: "bottom-[50%] left-[50%] translate-x-[-50%] transition-all duration-500",
-          6: "bottom-[50%] left-[20%] transition-all duration-500",
-          7: "bottom-[75%] right-[20%] transition-all duration-500",
-          8: "bottom-[50%] right-[20%] transition-all duration-500",
-          9: "bottom-[75%] left-[20%] transition-all duration-500",
-          10: "bottom-[75%] left-[50%] translate-x-[-50%] transition-all duration-500",
-        });
-        break;
-      case "4-4-2":
-        setPositions({
-          0: "bottom-[4%] left-[50%] translate-x-[-50%] transition-all duration-500",
-          4: "bottom-[25%] left-[10%] transition-all duration-500",
-          3: "bottom-[25%] left-[35%] transition-all duration-500",
-          1: "bottom-[25%] right-[10%] transition-all duration-500",
-          2: "bottom-[25%] right-[35%] transition-all duration-500",
-          6: "bottom-[50%] left-[10%] transition-all duration-500",
-          5: "bottom-[50%] left-[32%] transition-all duration-500",
-          8: "bottom-[50%] right-[10%] transition-all duration-500",
-          9: "bottom-[75%] right-[30%] transition-all duration-500",
-          10: "bottom-[75%] left-[30%] transition-all duration-500",
-          7: "bottom-[50%] right-[32%]  transition-all duration-500",
-        });
-        break;
-      case "4-2-3-1":
-        setPositions({
-          0: "bottom-[4%] left-[50%] translate-x-[-50%] transition-all duration-500",
-          4: "sm:top-[66%] top-[62.5%] left-[10%] transition-all duration-500",
-          3: "sm:top-[66%] top-[62.5%] left-[35%] transition-all duration-500",
-          1: "sm:top-[66%] top-[62.5%] right-[10%] transition-all duration-500",
-          2: "sm:top-[66%] top-[62.5%] right-[35%] transition-all duration-500",
-          6: "sm:top-[46%] top-[42.5%] left-[30%] transition-all duration-500",
-          5: "sm:top-[46%] top-[42.5%] right-[30%] transition-all duration-500",
-          8: "sm:top-[26%] top-[22.5%] left-[50%] translate-x-[-50%] transition-all duration-500",
-          9: "sm:top-[26%] top-[22.5%] left-[15%] transition-all duration-500",
-          10: "sm:top-[11%] top-[8.5%] left-[50%] translate-x-[-50%] transition-all duration-500",
-          7: "sm:top-[26%] top-[22.5%] right-[15%] transition-all duration-500",
-        });
-        break;
-      case "4-1-4-1":
-        setPositions({
-          0: "bottom-[4%] left-[50%] translate-x-[-50%] transition-all duration-500",
-          4: "bottom-[25%] left-[10%] transition-all duration-500",
-          3: "bottom-[25%] left-[35%] transition-all duration-500",
-          1: "bottom-[25%] right-[10%] transition-all duration-500",
-          2: "bottom-[25%] right-[35%] transition-all duration-500",
-          6: "bottom-[62%] left-[32%] transition-all duration-500",
-          5: "bottom-[43%] left-[50%] translate-x-[-50%] transition-all duration-500",
-          8: "bottom-[62%] right-[32%] transition-all duration-500",
-          9: "bottom-[62%] left-[10%] transition-all duration-500",
-          10: "bottom-[80%] left-[50%] translate-x-[-50%] transition-all duration-500",
-          7: "bottom-[62%] right-[10%] transition-all duration-500",
-        });
-        break;
-      case "4-3-2-1":
-        setPositions({
-          0: "bottom-[4%] left-[50%] translate-x-[-50%] transition-all duration-500",
-          1: "bottom-[25%] right-[10%] transition-all duration-500",
-          2: "bottom-[25%] right-[35%] transition-all duration-500",
-          3: "bottom-[25%] left-[35%] transition-all duration-500",
-          4: "bottom-[25%] left-[10%] transition-all duration-500",
-          5: "bottom-[45%] left-[50%] translate-x-[-50%] transition-all duration-500",
-          6: "bottom-[45%] left-[20%] transition-all duration-500",
-          7: "bottom-[65%] left-[27%] transition-all duration-500",
-          8: "bottom-[65%] right-[27%] transition-all duration-500",
-          9: "bottom-[45%] right-[20%] transition-all duration-500",
-          10: "bottom-[80%] left-[50%] translate-x-[-50%] transition-all duration-500",
-        });
-        break;
-      case "4-1-2-1-2":
-        setPositions({
-          0: "bottom-[4%] left-[50%] translate-x-[-50%] transition-all duration-500",
-          4: "bottom-[25%] left-[10%] transition-all duration-500",
-          3: "bottom-[25%] left-[35%] transition-all duration-500",
-          1: "bottom-[25%] right-[10%] transition-all duration-500",
-          2: "bottom-[25%] right-[35%] transition-all duration-500",
-          6: "bottom-[52%] left-[22%] transition-all duration-500",
-          5: "bottom-[40%] left-[50%] translate-x-[-50%] transition-all duration-500",
-          8: "bottom-[80%] right-[30%] transition-all duration-500",
-          9: "bottom-[52%] right-[22%] transition-all duration-500",
-          10: "bottom-[80%] left-[30%] transition-all duration-500",
-          7: "bottom-[65%] left-[50%] translate-x-[-50%] transition-all duration-500",
-        });
-        break;
-      case "3-4-3":
-        setPositions({
-          0: "bottom-[4%] left-[50%] translate-x-[-50%] transition-all duration-500",
-          4: "bottom-[50%] left-[10%] transition-all duration-500",
-          3: "bottom-[25%] left-[20%] transition-all duration-500",
-          1: "bottom-[25%] right-[20%] transition-all duration-500",
-          2: "bottom-[25%] left-[50%] translate-x-[-50%] transition-all duration-500",
-          6: "bottom-[50%] left-[32%] transition-all duration-500",
-          5: "bottom-[50%] right-[32%] transition-all duration-500",
-          8: "bottom-[50%] right-[10%] transition-all duration-500",
-          9: "bottom-[75%] left-[20%] transition-all duration-500",
-          10: "bottom-[75%] left-[50%] translate-x-[-50%] transition-all duration-500",
-          7: "bottom-[75%] right-[20%] transition-all duration-500",
-        });
-        break;
-      case "3-5-2":
-        setPositions({
-          0: "bottom-[4%] left-[50%] translate-x-[-50%] transition-all duration-500",
-          4: "bottom-[50%] left-[25%] transition-all duration-500",
-          3: "bottom-[25%] left-[20%] transition-all duration-500",
-          1: "bottom-[25%] right-[20%] transition-all duration-500",
-          2: "bottom-[25%] left-[50%] translate-x-[-50%] transition-all duration-500",
-          6: "bottom-[50%] left-[50%] translate-x-[-50%] transition-all duration-500",
-          5: "bottom-[50%] right-[25%] transition-all duration-500",
-          8: "bottom-[50%] right-[8%] transition-all duration-500",
-          9: "bottom-[50%] left-[8%] transition-all duration-500",
-          10: "bottom-[75%] left-[25%] transition-all duration-500",
-          7: "bottom-[75%] right-[25%] transition-all duration-500",
-        });
-        break;
-      case "3-2-4-1":
-        setPositions({
-          0: "bottom-[4%] left-[50%] translate-x-[-50%] transition-all duration-500",
-          1: "bottom-[25%] right-[20%] transition-all duration-500",
-          2: "bottom-[25%] left-[50%] translate-x-[-50%] transition-all duration-500",
-          3: "bottom-[25%] left-[20%] transition-all duration-500",
-          4: "bottom-[45%] left-[30%] transition-all duration-500",
-          5: "bottom-[45%] right-[30%] transition-all duration-500",
-          6: "bottom-[65%] left-[32%]  transition-all duration-500",
-          7: "bottom-[65%] right-[32%] transition-all duration-500",
-          8: "bottom-[65%] right-[10%] transition-all duration-500",
-          9: "bottom-[80%] left-[50%] translate-x-[-50%] transition-all duration-500",
-          10: "bottom-[65%] left-[10%] transition-all duration-500",
-        });
-        break;
+  // console.log(team,customTeam);
+  const saveLineUp = () => {
+    // console.log("save lineup");
+    // if (switchMode === "fetched") {
+    //   console.log(team);
+    //   console.log(positions);
+    // } else {
+    //   console.log(customTeam);
+    //   console.log(positions);
+    // }
 
-      default:
-        break;
+    const finalLineup = switchMode === 'fetched' ? team : customTeam
+
+    const lineup = {
+      team: lineupName ? lineupName : 'Lineup builder',
+      players: [...finalLineup],
+      formation: formation,
+      positions: {...positions},
+    };
+    console.log(lineup);
+    
+    const save = async () => {
+      try {
+        const res = await fetch("https://lineup-builder-server.onrender.com/save-lineup", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(lineup),
+        });
+        const data = await res.json();
+        console.log(data);
+        window.open(`/lineup/${data._id}`);
+
+      } catch (err) {
+        console.log(err);
+        
+      }
     }
-  }, [formation]);
+    save()
+  };
 
-  const copyLink = () => {};
+  const copyLink = () => {
+    console.log(finalFormation);
+
+    // if (switchMode == "fetched") {
+    // } else {
+    //   setFinalFormation([...customTeam]);
+    // }
+
+    if (finalFormation) {
+    }
+  };
   const handleCapture = async () => {
     html2canvas(componentRef.current)
       .then((canvas) => {
@@ -297,22 +249,25 @@ function App() {
       });
   };
 
-  
   // console.log(positions[7].replace(' transition-all duration-500',''));
-  
-  
-  
-  const downloadFormation = formation
-  
-  
+
+  const downloadFormation = formation;
+
   const downloadImage = () => {
     const teamURL = team?.map((t) => {
-      return `${t.name.split(" ")[t.name.split(" ").length - 1]+':'+t.id}`;
+      return `${t.name.split(" ")[t.name.split(" ").length - 1] + ":" + t.id}`;
     });
     const customTeamURL = customTeam?.map((t) => {
-      return `${t.name.split(" ")[t.name.split(" ").length - 1]+':'+t.id}`;
+      return `${t.name.split(" ")[t.name.split(" ").length - 1] + ":" + t.id}`;
     });
-    window.open(`/team?players=${switchMode == 'fetched' ? teamURL : customTeamURL}&formation=${downloadFormation}${lineupName && `&lineupName=${lineupName}` }`, "_blank");
+    window.open(
+      `/team?players=${
+        switchMode == "fetched" ? teamURL : customTeamURL
+      }&formation=${downloadFormation}${
+        lineupName && `&lineupName=${lineupName}`
+      }`,
+      "_blank"
+    );
   };
   useEffect(() => {
     const storedRecentPlayers = JSON.parse(
@@ -474,9 +429,12 @@ function App() {
       },
     ]);
   };
+  useEffect(() => {
+    console.log(formation);
+  }, [formation]);
 
   return (
-    <div className="  h-full overflow-hidden flex flex-col-reverse md:grid md:grid-cols-3 lg:grid-cols-4 max-w-[1280px] m-auto gap-4 sm:px-4 py-10 bg-black">
+    <div className="  h-full overflow-hidden flex flex-col-reverse md:grid md:grid-cols-3 lg:grid-cols-4 max-w-[1440px] m-auto gap-4 sm:px-4 py-10 bg-black">
       {/* <div className=" absolute bottom-0 bg-red-500">{errorAlert}</div> */}
 
       <div className=" col-span-1 rounded-xl overflow-hidden">
@@ -512,6 +470,7 @@ function App() {
           setSwitchMode={setSwitchMode}
           setRecentTeams={setRecentTeams}
           recentTeams={recentTeams}
+          getTeams={getTeams}
         />
       </div>
       <div className=" col-span-2 rounded-xl overflow-hidden bg-[#1d1d1d]">
@@ -528,41 +487,11 @@ function App() {
             id=""
             value={formation}
             onChange={changeFormation}
-            className=" bg-transparent text-[20px] w-fit outline outline-1 rounded-full outline-[#2C2C2C] text-white focus:bg-[#2C2C2C] cursor-pointer hover:bg-[#2C2C2C] scroll_bar"
+            className=" bg-transparent text-[20px] w-fit outline outline-1 rounded-full outline-[#2c2c2c] px-2 text-white focus:bg-[#2C2C2C] cursor-pointer hover:bg-[#2C2C2C] scroll_bar"
           >
-            <option className="" value="4-3-3">
-              4-3-3
-            </option>
-            <option value="4-4-2">4-4-2</option>
-            <option value="4-2-3-1">4-2-3-1</option>
-            <option value="4-1-4-1">4-1-4-1</option>
-            <option value="4-3-2-1">4-3-2-1</option>
-            <option value="4-1-2-1-2">4-1-2-1-2</option>
-            <option value="3-4-3">3-4-3</option>
-            <option value="3-5-2">3-5-2</option>
-            <option value="3-2-4-1">3-2-4-1</option>
-            <option value="5-3-2">5-3-2</option>
-            <option value="5-4-1">5-4-1</option>
-            <option value="4-5-1">4-5-1</option>
-            <option value="4-4-1-1">4-4-1-1</option>
-            <option value="4-2-2-2">4-2-2-2</option>
-            <option value="4-2-4">4-2-4</option>
-            <option value="3-4-2-1">3-4-2-1</option>
-            <option value="3-4-1-2">3-4-1-2</option>
-            <option value="4-3-1-2">4-3-1-2</option>
-            <option value="5-2-3">5-2-3</option>
-            <option value="5-2-2-1">5-2-2-1</option>
-            <option value="4-2-1-3">4-2-1-3</option>
-            <option value="4-1-2-3">4-1-2-3</option>
-            <option value="3-1-4-2">3-1-4-2</option>
-            <option value="4-1-3-2">4-1-3-2</option>
-            <option value="4-1-2-2-1">4-1-2-2-1</option>
-            <option value="3-3-4">3-3-4</option>
-            <option value="3-3-3-1">3-3-3-1</option>
-            <option value="5-3-1-1">5-3-1-1</option>
-            <option value="3-3-2-2">3-3-2-2</option>
-            <option value="3-5-1-1">3-5-1-1</option>
-            <option value="2-3-2-3">2-3-2-3</option>
+            {options.map((option) => (
+              <option value={option.value}>{option.label}</option>
+            ))}
           </select>
           <button className=" text-white cursor-pointer" onClick={clearLineUp}>
             Clear Lineup
@@ -581,7 +510,7 @@ function App() {
           <div className="absolute h-[44px] sm:h-[52px] w-28 sm:w-32 rounded-tl-lg rounded-tr-lg border-4 border-b-0 border-solid border-[#343434] bottom-0 left-[50%] translate-x-[-50%] z-20"></div>
           <div className="absolute h-28 sm:h-32 w-60 sm:w-72 rounded-tl-lg rounded-tr-lg border-4 border-b-0 border-solid border-[#343434] bottom-0 left-[50%] translate-x-[-50%] bg-[#2C2C2C] z-10"></div>
           <div className="absolute h-[128px] sm:h-[150px] w-32 rounded-t-full border-4 border-b-0 border-solid border-[#343434] bottom-0 left-[50%] translate-x-[-50%]"></div>
-          { switchMode === 'fetched' && team ? (
+          {switchMode === "fetched" && team ? (
             <>
               {team?.map((t, index) => (
                 <LineUp
@@ -597,6 +526,7 @@ function App() {
                   setSwitchMode={setSwitchMode}
                   switchMode={switchMode}
                   setClickedPlayerData={setClickedPlayerData}
+                  getTeams={getTeams}
                 />
               ))}
             </>
@@ -648,19 +578,27 @@ function App() {
           customTeam[9].id &&
           customTeam[10].id) ||
           switchMode == "fetched") && (
-          <div className=" p-4 flex justify-center gap-4">
+          // <div className=" p-4 flex justify-center gap-4">
+          //   <button
+          //     className=" px-3 py-1 bg-[#60df6e] rounded-lg"
+          //     onClick={downloadImage}
+          //     id="formation-image"
+          //   >
+          //     Download Image
+          //   </button>
+          //   <button
+          //     className=" px-3 py-1 bg-[#60df6e] rounded-lg"
+          //     onClick={copyLink}
+          //   >
+          //     Copy Link
+          //   </button>
+          // </div>
+          <div>
             <button
-              className=" px-3 py-1 bg-[#60df6e] rounded-lg"
-              onClick={downloadImage}
-              id="formation-image"
+              className=" w-full p-4 bg-[#60df6e] text-white"
+              onClick={saveLineUp}
             >
-              Download Image
-            </button>
-            <button
-              className=" px-3 py-1 bg-[#60df6e] rounded-lg"
-              onClick={handleCapture}
-            >
-              Copy Link
+              Save Lineup
             </button>
           </div>
         )}
