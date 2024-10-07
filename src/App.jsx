@@ -14,6 +14,7 @@ import { inject } from "@vercel/analytics";
 import CustomFormation from "./CustomFormation";
 import { useNavigate } from "react-router-dom";
 import html2canvas from "html2canvas";
+import Loading from "./assets/Loading";
 
 inject();
 
@@ -49,6 +50,7 @@ function App({
   const [clickedPlayerData, setClickedPlayerData] = useState({});
   const [recentPlayers, setRecentPlayers] = useState([]);
   const [recentTeams, setRecentTeams] = useState([]);
+  const [savingLineup,setSavingLineup] = useState(false)
 
   const componentRef = useRef();
 
@@ -205,6 +207,7 @@ function App({
     console.log(lineup);
     
     const save = async () => {
+      setSavingLineup(true)
       try {
         const res = await fetch("https://lineup-builder-server.onrender.com/save-lineup", {
           method: "POST",
@@ -215,6 +218,7 @@ function App({
         });
         const data = await res.json();
         console.log(data);
+        setSavingLineup(false)
         window.open(`/lineup/${data._id}`);
 
       } catch (err) {
@@ -595,10 +599,11 @@ function App({
           // </div>
           <div>
             <button
-              className=" w-full p-4 bg-[#60df6e] text-white"
+              className={`${savingLineup ? 'cursor-not-allowed opacity-30' : 'cursor-pointer'} hover:bg-opacity-80 w-full p-4 bg-[#60df6e] text-white flex justify-center items-center`}
               onClick={saveLineUp}
             >
-              Save Lineup
+              {
+                savingLineup ? <Loading /> : 'Save Lineup'}
             </button>
           </div>
         )}
