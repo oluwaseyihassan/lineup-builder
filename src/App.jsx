@@ -15,6 +15,10 @@ import CustomFormation from "./CustomFormation";
 import { useNavigate } from "react-router-dom";
 import html2canvas from "html2canvas";
 import Loading from "./assets/Loading";
+import TimeAgo from "javascript-time-ago";
+import en from "javascript-time-ago/locale/en";
+import { Link } from "react-router-dom";
+import Cancel from "./assets/Cancel";
 
 inject();
 
@@ -50,7 +54,8 @@ function App({
   const [clickedPlayerData, setClickedPlayerData] = useState({});
   const [recentPlayers, setRecentPlayers] = useState([]);
   const [recentTeams, setRecentTeams] = useState([]);
-  const [savingLineup,setSavingLineup] = useState(false)
+  const [savingLineup, setSavingLineup] = useState(false);
+  const [recentLineups, setRecentLineups] = useState([]);
 
   const componentRef = useRef();
 
@@ -181,65 +186,71 @@ function App({
     },
   ];
 
+  const formatDate = (dateString) => {
+    const options = { year: "numeric", month: "short", day: "numeric" };
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-us", options);
+  };
+
+  TimeAgo.addDefaultLocale(en);
+  const timeAgo = new TimeAgo("en-US");
+
   const changeFormation = (e) => {
     setFormation(e.target.value);
   };
 
-  // console.log(team,customTeam);
   const saveLineUp = () => {
-    // console.log("save lineup");
-    // if (switchMode === "fetched") {
-    //   console.log(team);
-    //   console.log(positions);
-    // } else {
-    //   console.log(customTeam);
-    //   console.log(positions);
-    // }
-
-    const finalLineup = switchMode === 'fetched' ? team : customTeam
+    const finalLineup = switchMode === "fetched" ? team : customTeam;
 
     const lineup = {
-      team: lineupName ? lineupName : 'Lineup builder',
+      team: lineupName ? lineupName : "Lineup builder",
       players: [...finalLineup],
       formation: formation,
-      positions: {...positions},
+      positions: { ...positions },
     };
-    console.log(lineup);
-    
-    const save = async () => {
-      setSavingLineup(true)
-      try {
-        const res = await fetch("https://lineup-builder-server.onrender.com/save-lineup", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(lineup),
-        });
-        const data = await res.json();
-        console.log(data);
-        setSavingLineup(false)
-        window.open(`/lineup/${data._id}`);
 
+    const save = async () => {
+      setSavingLineup(true);
+      try {
+        const res = await fetch(
+          "https://lineup-builder-server.onrender.com/save-lineup",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(lineup),
+          }
+        );
+        const data = await res.json();
+        setSavingLineup(false);
+        setRecentLineups([...recentLineups, data]);
+        window.open(`/lineup/${data._id}`);
       } catch (err) {
         console.log(err);
-        
       }
-    }
-    save()
+    };
+    save();
   };
 
-  const copyLink = () => {
-    console.log(finalFormation);
-
-    // if (switchMode == "fetched") {
-    // } else {
-    //   setFinalFormation([...customTeam]);
-    // }
-
-    if (finalFormation) {
+  useEffect(() => {
+    const storedRecentLineups = JSON.parse(
+      window.localStorage.getItem("RECENT_LINEUPS")
+    );
+    if (storedRecentLineups) {
+      setRecentLineups(storedRecentLineups);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    if (recentLineups.length > 0) {
+      window.localStorage.setItem(
+        "RECENT_LINEUPS",
+        JSON.stringify(recentLineups)
+      );
+    }
+  }, [recentLineups]);
+
   const handleCapture = async () => {
     html2canvas(componentRef.current)
       .then((canvas) => {
@@ -252,8 +263,6 @@ function App({
         console.error("Error capturing the image:", err);
       });
   };
-
-  // console.log(positions[7].replace(' transition-all duration-500',''));
 
   const downloadFormation = formation;
 
@@ -279,13 +288,10 @@ function App({
     );
     if (storedRecentPlayers) {
       setRecentPlayers(storedRecentPlayers);
-      console.log(storedRecentPlayers);
     }
-    console.log(recentPlayers);
   }, []);
 
   useEffect(() => {
-    console.log(recentPlayers);
     if (recentPlayers.length > 0) {
       window.localStorage.setItem(
         "LINEUP_RECENT_PLAYERS",
@@ -300,13 +306,10 @@ function App({
     );
     if (storedRecentTeams) {
       setRecentTeams(storedRecentTeams);
-      console.log(storedRecentTeams);
     }
-    console.log(recentTeams);
   }, []);
 
   useEffect(() => {
-    console.log(recentTeams);
     if (recentTeams.length > 0) {
       window.localStorage.setItem(
         "LINEUP_RECENT_TEAMS",
@@ -314,6 +317,29 @@ function App({
       );
     }
   }, [recentTeams]);
+
+  const deleteLineup = async (lineupId) => {
+    if (window.confirm("Are you sure you want to delete this lineup?")) {
+      try {
+        const response = await fetch(
+          `http://localhost:5001/delete-lineup/${lineupId}`,
+          {
+            method: "DELETE",
+          }
+        );
+        if (!response.ok) {
+          throw new Error("Failed to delete lineup");
+        }
+        alert("Lineup deleted successfully");
+        setRecentLineups(
+          recentLineups.filter((lineup) => lineup._id !== lineupId)
+        );
+        // Optionally redirect or update the UI after deletion
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  };
 
   const clearLineUp = () => {
     setSwitchMode("custom");
@@ -433,9 +459,6 @@ function App({
       },
     ]);
   };
-  useEffect(() => {
-    console.log(formation);
-  }, [formation]);
 
   return (
     <div className="  h-full overflow-hidden flex flex-col-reverse md:grid md:grid-cols-3 lg:grid-cols-4 max-w-[1440px] m-auto gap-4 sm:px-4 py-10 bg-black">
@@ -476,6 +499,45 @@ function App({
           recentTeams={recentTeams}
           getTeams={getTeams}
         />
+        <div className=" text-white bg-[#1d1d1d] mt-4 rounded-xl py-4 lg:hidden md:block  ">
+          <div className=" text-center">Recent Lineups</div>
+          <div className=" overflow-y-scroll md:block max-h-[150px] scroll_bar">
+            {recentLineups?.map((lineup) => (
+              <div
+                className=" px-4 py-2 cursor-pointer hover:bg-[#2c2c2c]  flex justify-between items-center"
+                key={lineup._id}
+              >
+                <Link
+                  to={`/lineup/${lineup._id}`}
+                  target="_blank"
+                  className="  w-full"
+                >
+                  <div>{lineup.team}</div>
+                  <div className=" text-[#9F9F9F] text-xs">
+                    {timeAgo
+                      .format(new Date(`${lineup.createdAt}`))
+                      .replace("minutes", "mins")
+                      .replace("minute", "min")
+                      .replace("hour", "hr")
+                      .replace("hours", "hrs")}
+                  </div>
+                </Link>
+                <Cancel handleCancel={() => deleteLineup(lineup._id)} />
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className=" col-span-1 px-4 py-4 text-white bg-[#1D1D1D] h-fit rounded-xl mt-4 md:block lg:hidden">
+          <h3 className=" font-bold text-lg text-center mb-5">Build your XI</h3>
+          <p className=" px-2 text-xs mb-4">
+            Build your dream XI, pick your team’s next lineup, or plan your
+            transfer window.
+          </p>
+          <p className=" px-2 text-xs">
+            Start by clicking on an empty player and searching for the player
+            you want to add, or by selecting a team to pre-fill and modify.
+          </p>
+        </div>
       </div>
       <div className=" col-span-2 rounded-xl overflow-hidden bg-[#1d1d1d]">
         <div className="  px-4 py-2 flex justify-between items-center">
@@ -599,25 +661,58 @@ function App({
           // </div>
           <div>
             <button
-              className={`${savingLineup ? 'cursor-not-allowed opacity-30' : 'cursor-pointer'} hover:bg-opacity-80 w-full p-4 bg-[#60df6e] text-white flex justify-center items-center`}
+              className={`${
+                savingLineup
+                  ? "cursor-not-allowed opacity-30"
+                  : "cursor-pointer"
+              } hover:bg-opacity-80 w-full p-4 bg-[#60df6e] text-white flex justify-center items-center`}
               onClick={saveLineUp}
             >
-              {
-                savingLineup ? <Loading /> : 'Save Lineup'}
+              {savingLineup ? <Loading /> : "Save Lineup"}
             </button>
           </div>
         )}
       </div>
-      <div className=" col-span-1 px-4 py-4 text-white bg-[#1D1D1D] h-fit rounded-xl hidden lg:block">
-        <h3 className=" font-bold text-lg text-center mb-5">Build your XI</h3>
-        <p className=" px-2 text-xs mb-4">
-          Build your dream XI, pick your team’s next lineup, or plan your
-          transfer window.
-        </p>
-        <p className=" px-2 text-xs">
-          Start by clicking on an empty player and searching for the player you
-          want to add, or by selecting a team to pre-fill and modify.
-        </p>
+      <div className="col-span-1">
+        <div className="  px-4 py-4 text-white bg-[#1D1D1D] h-fit rounded-xl hidden lg:block">
+          <h3 className=" font-bold text-lg text-center mb-5">Build your XI</h3>
+          <p className=" px-2 text-xs mb-4">
+            Build your dream XI, pick your team’s next lineup, or plan your
+            transfer window.
+          </p>
+          <p className=" px-2 text-xs">
+            Start by clicking on an empty player and searching for the player
+            you want to add, or by selecting a team to pre-fill and modify.
+          </p>
+        </div>
+        <div className=" text-white bg-[#1d1d1d] mt-4 rounded-xl py-4 hidden lg:block  ">
+          <div className=" text-center">Recent Lineups</div>
+          <div className=" overflow-y-scroll md:block max-h-[250px] scroll_bar">
+            {recentLineups?.sort((a,b) => b.createdAt - a.createdAt).map((lineup) => (
+              <div
+                className=" px-4 py-2 cursor-pointer hover:bg-[#2c2c2c]  flex justify-between items-center"
+                key={lineup._id}
+              >
+                <Link
+                  to={`/lineup/${lineup._id}`}
+                  target="_blank"
+                  className=" w-full"
+                >
+                  <div>{lineup.team}</div>
+                  <div className=" text-[#9F9F9F] text-xs">
+                    {timeAgo
+                      .format(new Date(`${lineup.createdAt}`))
+                      .replace("minutes", "mins")
+                      .replace("minute", "min")
+                      .replace("hour", "hr")
+                      .replace("hours", "hrs")}
+                  </div>
+                </Link>
+                <Cancel handleCancel={() => deleteLineup(lineup._id)} />
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );

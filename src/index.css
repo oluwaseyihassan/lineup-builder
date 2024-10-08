@@ -16,9 +16,10 @@
 }
 
 .scroll_bar::-webkit-scrollbar {
-  width: 10px;
-  background-color: #424242;
+  width: 4px;
+  /* background-color: #424242; */
 }
+
 
 .scroll_bar::-webkit-scrollbar-thumb {
   background-color: #686868;

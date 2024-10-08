@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import SearchSvg from "./assets/SearchSvg";
 import Cancel from "./assets/Cancel";
+import { teamImgPlaceholder } from "./assets/assets";
 
 const PreFillLineup = ({
   teamId,
@@ -9,11 +10,26 @@ const PreFillLineup = ({
   setSwitchMode,
   setRecentTeams,
   recentTeams,
-  getTeams
+  getTeams,
 }) => {
   const [showSearch, setShowSearch] = useState(false);
   const [searchParam, setSearchParam] = useState("");
   const [searchResult, setSearchResult] = useState([]);
+
+  const ref = useRef(null);
+
+  const handleClickAway = (e) => {
+    if (ref.current && !ref.current.contains(e.target)) {
+      setShowSearch(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickAway);
+    return () => {
+      document.removeEventListener("mousedown", handleClickAway);
+    };
+  }, []);
 
   useEffect(() => {
     const getTeams = async () => {
@@ -23,11 +39,6 @@ const PreFillLineup = ({
         );
         const data = await response.json();
         setSearchResult(
-          data
-            .filter((d) => d.title.key === "teams")
-            .map((s) => s.suggestions)[0]
-        );
-        console.log(
           data
             .filter((d) => d.title.key === "teams")
             .map((s) => s.suggestions)[0]
@@ -47,14 +58,11 @@ const PreFillLineup = ({
       setSwitchMode("custom");
     }
 
-
-
     const newRecentTeam = {
       id: e.target.dataset.id,
       name: e.target.dataset.name,
       leagueName: e.target.dataset.leaguename,
     };
-    console.log(newRecentTeam);
 
     const isPlayerAlreadyAdded = recentTeams.some(
       (p) => p.id === newRecentTeam.id
@@ -64,13 +72,16 @@ const PreFillLineup = ({
     }
   };
   const handleClick2 = (e) => {
-    getTeams(e.target.dataset.id)
+    getTeams(e.target.dataset.id);
     if (!lineupNotFound) {
       setTeamId(e.target.dataset.id);
       setSwitchMode("fetched");
     } else {
       setSwitchMode("custom");
     }
+  };
+  const handleCancel = () => {
+    setSearchParam("");
   };
   return (
     <div className=" bg-[#1D1D1D] py-3 text-white rounded-b-xl">
@@ -79,7 +90,7 @@ const PreFillLineup = ({
         Choose a team to edit
       </h5>
       <div className="relative mb-1 px-3">
-        <div className="flex bg-[#2C2C2C] rounded-full items-center px-2">
+        <div className="flex bg-[#2C2C2C] rounded-full items-center px-3 py-1">
           <SearchSvg />
           <input
             className=" bg-transparent outline-none indent-1 text-[12px] py-[4px] w-full"
@@ -92,12 +103,19 @@ const PreFillLineup = ({
             onFocus={() => setShowSearch(true)}
             //   onBlur={() => setShowSearch(false)}
           />
-          <Cancel setSearchParam={setSearchParam} searchParam={searchParam} />
+          {searchParam.length !== 0 && (
+            <Cancel
+              setSearchParam={setSearchParam}
+              searchParam={searchParam}
+              handleCancel={handleCancel}
+            />
+          )}
         </div>
         <div
           className={`${
             showSearch ? "block" : "hidden"
           } absolute bg-[#1D1D1D] shadow-md w-[90%] overflow-y-scroll scroll_bar max-h-[500px] mt-1 py-2 rounded-xl min-h-[350px]`}
+          ref={ref}
         >
           <div className="">
             {searchParam.length > 0 && !searchResult && (
@@ -107,100 +125,121 @@ const PreFillLineup = ({
             )}
             {searchParam.length == 0 && (
               <div>
-                <h3 className=" px-3">Recent</h3>
+                <h3 className=" px-3">
+                  {recentTeams.length > 0 ? "Recent" : "No recent Teams"}
+                </h3>
                 {recentTeams.map((r) => (
                   <button
-                    className="flex gap-4 items-center w-full cursor-pointer hover:bg-[#2C2C2C] px-4 py-2"
-                    onClick={(e) => {
-                      handleClick(e);
-                      setShowSearch(false);
-                    }}
+                    className="flex  items-center justify-between w-full cursor-pointer hover:bg-[#2C2C2C] px-4 py-1"
                     data-id={r.id}
                     data-name={r.name}
                     data-leaguename={r.leagueName}
                     key={r.id}
                   >
-                    <img
-                      className="w-5 h-5"
-                      src={`https://images.fotmob.com/image_resources/logo/teamlogo/${r.id}_xsmall.png`}
-                      alt=""
-                      data-id={r.id}
-                      data-name={r.name}
-                      data-leaguename={r.leagueName}
-                    />
                     <div
-                      className=" flex flex-col text-left"
+                      className=" flex items-center gap-4 w-full h-[36px]"
+                      onClick={(e) => {
+                        handleClick(e);
+                        setShowSearch(false);
+                      }}
                       data-id={r.id}
                       data-name={r.name}
                       data-leaguename={r.leagueName}
                     >
+                      <img
+                        className="w-5 h-5"
+                        src={`https://images.fotmob.com/image_resources/logo/teamlogo/${r.id}_xsmall.png`}
+                        alt=""
+                        data-id={r.id}
+                        data-name={r.name}
+                        data-leaguename={r.leagueName}
+                        onError={teamImgPlaceholder}
+                      />
                       <div
-                        className=" text-[12px]"
+                        className=" flex flex-col text-left"
                         data-id={r.id}
                         data-name={r.name}
                         data-leaguename={r.leagueName}
                       >
-                        {r.name}
-                      </div>
-                      <div
-                        className=" text-[10px] text-[#9F9F9F]"
-                        data-id={r.id}
-                        data-name={r.name}
-                        data-leaguename={r.leagueName}
-                      >
-                        {r.leagueName}
+                        <div
+                          className=" text-[12px]"
+                          data-id={r.id}
+                          data-name={r.name}
+                          data-leaguename={r.leagueName}
+                        >
+                          {r.name}
+                        </div>
+                        <div
+                          className=" text-[10px] text-[#9F9F9F]"
+                          data-id={r.id}
+                          data-name={r.name}
+                          data-leaguename={r.leagueName}
+                        >
+                          {r.leagueName}
+                        </div>
                       </div>
                     </div>
+                    <Cancel
+                      handleCancel={() => {
+                        setRecentTeams(
+                          recentTeams.filter((team) => team.id !== r.id)
+                        );
+                      }}
+                    />
                   </button>
                 ))}
               </div>
             )}
-            {searchResult?.length > 1 && <div>Search for Teams</div>}
-            {searchResult?.map((s) => (
-              <button
-                className="flex gap-4 items-center w-full cursor-pointer hover:bg-[#2C2C2C] px-4 py-2"
-                onClick={(e) => {
-                  handleClick(e);
-                  setShowSearch(false);
-                }}
-                data-id={s.id}
-                data-name={s.name}
-                data-leaguename={s.leagueName}
-                key={s.id}
-              >
-                <img
-                  className="w-5 h-5"
-                  src={`https://images.fotmob.com/image_resources/logo/teamlogo/${s.id}_xsmall.png`}
-                  alt=""
+            {searchParam.length > 0 && searchResult && (
+              <div className=" px-3">Search for Teams</div>
+            )}
+            {searchParam.length > 0 &&
+              searchResult?.map((s) => (
+                <button
+                  className="flex gap-4 items-center w-full cursor-pointer hover:bg-[#2C2C2C] px-4 py-2"
+                  onClick={(e) => {
+                    handleClick(e);
+                    setShowSearch(false);
+                  }}
                   data-id={s.id}
                   data-name={s.name}
                   data-leaguename={s.leagueName}
-                />
-                <div
-                  className=" flex flex-col text-left"
-                  data-id={s.id}
-                  data-name={s.name}
-                  data-leaguename={s.leagueName}
+                  key={s.id}
                 >
+                  <img
+                    className="w-5 h-5"
+                    src={`https://images.fotmob.com/image_resources/logo/teamlogo/${s.id}_xsmall.png`}
+                    alt=""
+                    data-id={s.id}
+                    data-name={s.name}
+                    data-leaguename={s.leagueName}
+                    onError={teamImgPlaceholder}
+                  />
                   <div
-                    className=" text-[12px]"
+                    className=" flex flex-col text-left"
                     data-id={s.id}
                     data-name={s.name}
                     data-leaguename={s.leagueName}
                   >
-                    {s.name}
+                    <div
+                      className=" text-[12px]"
+                      data-id={s.id}
+                      data-name={s.name}
+                      data-leaguename={s.leagueName}
+                    >
+                      {s.name}
+                    </div>
+                    <div
+                      className=" text-[10px] text-[#9F9F9F]"
+                      data-id={s.id}
+                      data-name={s.name}
+                      data-leaguename={s.leagueName}
+                    >
+                      {s.leagueName}
+                    </div>
                   </div>
-                  <div
-                    className=" text-[10px] text-[#9F9F9F]"
-                    data-id={s.id}
-                    data-name={s.name}
-                    data-leaguename={s.leagueName}
-                  >
-                    {s.leagueName}
-                  </div>
-                </div>
-              </button>
-            ))}
+                </button>
+              ))}
           </div>
         </div>
       </div>

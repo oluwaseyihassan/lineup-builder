@@ -9,7 +9,7 @@ const SearchSvg = () => {
       viewBox="0 0 16 16"
       fill="none"
       id="searchIcon"
-      className=" h-[8px] fill-white"
+      className=" h-[12px] fill-white"
     >
       <path
         fill-rule="evenodd"

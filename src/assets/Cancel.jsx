@@ -1,17 +1,14 @@
 import React from "react";
 
-const Cancel = ({ setSearchParam, searchParam }) => {
-    const handleCancel = () => {
-        setSearchParam("");
-    }
-  return (searchParam !== "") && (
-    <button onClick={handleCancel}>
+const Cancel = ({ setSearchParam, searchParam, handleCancel }) => {
+  return (
+    <button onClick={handleCancel} className=" h-[20px] w-[20px] rounded-full flex justify-center items-center">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="15"
         height="15"
         viewBox="0 0 15 15"
-        className=" h-[8px] fill-white"
+        className=" h-[10px] w-[10px] fill-white z-10"
       >
         <g id="ic_close" transform="translate(-20 -23)">
           <path

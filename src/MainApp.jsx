@@ -90,7 +90,6 @@ const MainApp = () => {
     },
   ]);
 
-  console.log(teamId);
 
   const getTeams = async (teamId) => {
     setLoadingLineup(true);
@@ -100,7 +99,6 @@ const MainApp = () => {
       );
       const data = await fetchedTeams.json();
       setTeam(data.players);
-      console.log(data.players);
 
       // setSwitchMode('fetched')
       setFormation(data.formation);
@@ -117,13 +115,7 @@ const MainApp = () => {
   // useEffect(() => {
 
   // }, [teamId]);
-  useEffect(() => {
-    setFinalFormation([...team]);
-    console.log(finalFormation);
-    
-  }, [team,customTeam]);
-  console.log(switchMode);
-  console.log(team, customTeam);
+
 
   useEffect(() => {
     switch (formation) {

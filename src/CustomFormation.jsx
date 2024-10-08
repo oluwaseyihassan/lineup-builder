@@ -18,7 +18,6 @@ const CustomFormation = () => {
         if (isDragging) {
             setPositions({ x: e.clientX >= 0 ? e.clientX - 360 : 0, y: e.clientY >= 0 ? e.clientY - 360 : 0 }); 
         }
-        console.log(positions);
         
     };
 

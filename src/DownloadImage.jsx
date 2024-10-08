@@ -24,20 +24,16 @@ const DownloadImage = ({
 
   const query = useQuery();
 
-  console.log(query.get("players"));
   const players = query.get("players");
   const lineupName = query.get("lineupName");
-  console.log(players.split("."));
 
   const teamFormation = query.get("formation");
   useEffect(() => {
     setPlayerDet(players.split(","));
-    console.log(playerDet);
   }, [players]);
 
   useEffect(() => {
     setPosition(getPosition(teamFormation));
-    console.log(teamFormation);
   }, [teamFormation]);
 
   const handleCapture = async () => {

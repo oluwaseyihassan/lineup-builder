@@ -24,7 +24,6 @@ const DownloadLineup = ({
         const res = await fetch(`https://lineup-builder-server.onrender.com/get-lineup/${id}`);
         const data = await res.json();
         setLineup(data);
-        console.log(data);
       } catch (err) {
         console.log(err);
       }

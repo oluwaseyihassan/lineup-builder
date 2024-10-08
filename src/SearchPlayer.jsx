@@ -106,13 +106,17 @@ const SearchPlayer = ({
     setSearchParam("");
   };
 
+  const handleCancel = () => {
+    setSearchParam("");
+  };
+
   return (
     <div
       className={`${
         showSearch ? "block" : "hidden"
       } fixed left-[50%] translate-x-[-50%] top-[50%] translate-y-[-50%] z-40 max-h-[500px] bg-[#1D1D1D]   rounded-md mt-1 py-4`}
     >
-      <div className=" px-2 flex bg-[#2C2C2C] rounded-full w-[94%] py-1 items-center m-auto">
+      <div className=" px-3 flex bg-[#2C2C2C] rounded-full w-[94%] py-1 items-center m-auto">
         <SearchSvg />
         <input
           type="text"
@@ -122,10 +126,16 @@ const SearchPlayer = ({
           onChange={(e) => {
             setSearchParam(e.target.value);
           }}
-          className="  bg-transparent outline-none text-white text-[12px] indent-1 w-full"
+          className="  bg-transparent outline-none text-white text-[12px] py-1 indent-1 w-full"
           placeholder="search"
         />
-        <Cancel setSearchParam={setSearchParam} searchParam={searchParam} />
+        {searchParam.length !== 0 && (
+          <Cancel
+            setSearchParam={setSearchParam}
+            searchParam={searchParam}
+            handleCancel={handleCancel}
+          />
+        )}
       </div>
       <div className=" overflow-y-scroll scroll_bar max-h-[500px] bg-inherit text-white mt-2 w-[300px] h-fit">
         {searchParam == "" && switchMode == "fetched" && (
@@ -203,52 +213,66 @@ const SearchPlayer = ({
               {recentPlayers.map((r) => (
                 <button
                   key={r.id}
-                  className=" flex cursor-pointer gap-3 py-2 hover:bg-[#2C2C2C] outline-none focus:bg-[#2C2C2C] w-full px-4 items-center"
+                  className=" flex cursor-pointer justify-between py-1 hover:bg-[#2C2C2C] outline-none focus:bg-[#2C2C2C] w-full px-4 items-center"
                   data-name={r.name}
                   data-id={r.id}
-                  onClick={handleClick}
                   data-teamname={r.teamName}
                 >
                   <div
-                    className=" h-[24px] w-[24px] justify-center rounded-full bg-[#383838] flex items-end overflow-hidden"
-                    data-name={r.name}
-                    data-id={r.id}
-                    data-teamname={r.teamName}
-                  >
-                    <img
-                      className="w-5 h-5"
-                      src={`https://images.fotmob.com/image_resources/playerimages/${r.id}.png`}
-                      onError={(e) => (e.target.src = imgPlaceholder)}
-                      alt=""
-                      data-name={r.name}
-                      data-id={r.id}
-                      data-teamname={r.teamName}
-                    />
-                  </div>
-                  <div
-                    className=" flex flex-col text-left"
+                    className="flex items-center gap-3 w-full h-[36px]"
+                    onClick={handleClick}
                     data-name={r.name}
                     data-id={r.id}
                     data-teamname={r.teamName}
                   >
                     <div
+                      className=" h-[24px] w-[24px] justify-center rounded-full bg-[#383838] flex items-end overflow-hidden"
                       data-name={r.name}
                       data-id={r.id}
                       data-teamname={r.teamName}
-                      className=" text-[12px]"
                     >
-                      {r.name}
+                      <img
+                        className="w-5 h-5"
+                        src={`https://images.fotmob.com/image_resources/playerimages/${r.id}.png`}
+                        onError={(e) => (e.target.src = imgPlaceholder)}
+                        alt=""
+                        data-name={r.name}
+                        data-id={r.id}
+                        data-teamname={r.teamName}
+                      />
                     </div>
+                    <div
+                      className=" flex flex-col text-left"
+                      data-name={r.name}
+                      data-id={r.id}
+                      data-teamname={r.teamName}
+                    >
+                      <div
+                        data-name={r.name}
+                        data-id={r.id}
+                        data-teamname={r.teamName}
+                        className=" text-[12px]"
+                      >
+                        {r.name}
+                      </div>
 
-                    <div
-                      data-name={r.name}
-                      data-id={r.id}
-                      data-teamname={r.teamName}
-                      className=" text-[10px] text-[#9F9F9F]"
-                    >
-                      {r.teamName}
+                      <div
+                        data-name={r.name}
+                        data-id={r.id}
+                        data-teamname={r.teamName}
+                        className=" text-[10px] text-[#9F9F9F]"
+                      >
+                        {r.teamName}
+                      </div>
                     </div>
                   </div>
+                  <Cancel
+                    handleCancel={() => {
+                      setRecentPlayers(
+                        recentPlayers.filter((player) => player.id !== r.id)
+                      );
+                    }}
+                  />
                 </button>
               ))}
             </div>
