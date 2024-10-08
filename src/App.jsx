@@ -461,7 +461,7 @@ function App({
   };
 
   return (
-    <div className="  h-full overflow-hidden flex flex-col-reverse md:grid md:grid-cols-3 lg:grid-cols-4 max-w-[1440px] m-auto gap-4 sm:px-4 py-10 bg-black">
+    <div className="  h-full overflow-hidden flex flex-col-reverse md:grid md:grid-cols-3 lg:grid-cols-4 max-w-[1440px] m-auto gap-4 px-1 sm:px-4 py-10 bg-black">
       {/* <div className=" absolute bottom-0 bg-red-500">{errorAlert}</div> */}
 
       <div className=" col-span-1 rounded-xl overflow-hidden">
@@ -685,34 +685,38 @@ function App({
             you want to add, or by selecting a team to pre-fill and modify.
           </p>
         </div>
-        <div className=" text-white bg-[#1d1d1d] mt-4 rounded-xl py-4 hidden lg:block  ">
-          <div className=" text-center">Recent Lineups</div>
-          <div className=" overflow-y-scroll md:block max-h-[250px] scroll_bar">
-            {recentLineups?.sort((a,b) => b.createdAt - a.createdAt).map((lineup) => (
-              <div
-                className=" px-4 py-2 cursor-pointer hover:bg-[#2c2c2c]  flex justify-between items-center"
-                key={lineup._id}
-              >
-                <Link
-                  to={`/lineup/${lineup._id}`}
-                  target="_blank"
-                  className=" w-full"
-                >
-                  <div>{lineup.team}</div>
-                  <div className=" text-[#9F9F9F] text-xs">
-                    {timeAgo
-                      .format(new Date(`${lineup.createdAt}`))
-                      .replace("minutes", "mins")
-                      .replace("minute", "min")
-                      .replace("hour", "hr")
-                      .replace("hours", "hrs")}
+        {recentLineups.length > 0 && (
+          <div className=" text-white bg-[#1d1d1d] mt-4 rounded-xl py-4 hidden lg:block  ">
+            <div className=" text-center">Recent Lineups</div>
+            <div className=" overflow-y-scroll md:block max-h-[250px] scroll_bar">
+              {recentLineups
+                ?.sort((a, b) => b.createdAt - a.createdAt)
+                .map((lineup) => (
+                  <div
+                    className=" px-4 py-2 cursor-pointer hover:bg-[#2c2c2c]  flex justify-between items-center"
+                    key={lineup._id}
+                  >
+                    <Link
+                      to={`/lineup/${lineup._id}`}
+                      target="_blank"
+                      className=" w-full"
+                    >
+                      <div>{lineup.team}</div>
+                      <div className=" text-[#9F9F9F] text-xs">
+                        {timeAgo
+                          .format(new Date(`${lineup.createdAt}`))
+                          .replace("minutes", "mins")
+                          .replace("minute", "min")
+                          .replace("hour", "hr")
+                          .replace("hours", "hrs")}
+                      </div>
+                    </Link>
+                    <Cancel handleCancel={() => deleteLineup(lineup._id)} />
                   </div>
-                </Link>
-                <Cancel handleCancel={() => deleteLineup(lineup._id)} />
-              </div>
-            ))}
+                ))}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

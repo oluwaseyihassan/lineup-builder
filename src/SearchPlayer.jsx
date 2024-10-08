@@ -114,7 +114,7 @@ const SearchPlayer = ({
     <div
       className={`${
         showSearch ? "block" : "hidden"
-      } fixed left-[50%] translate-x-[-50%] top-[50%] translate-y-[-50%] z-40 max-h-[500px] bg-[#1D1D1D]   rounded-md mt-1 py-4`}
+      } fixed left-[50%] translate-x-[-50%] top-[50%] translate-y-[-50%] z-40 h-[70%] sm:h-[400px] md:h-[500px] bg-[#1D1D1D]   rounded-md mt-1 py-4`}
     >
       <div className=" px-3 flex bg-[#2C2C2C] rounded-full w-[94%] py-1 items-center m-auto">
         <SearchSvg />
