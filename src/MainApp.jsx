@@ -4,6 +4,7 @@ import App from "./App";
 import { Routes, Route } from "react-router-dom";
 import DownloadLineup from "./DownloadLineup";
 import DownloadImage from "./DownloadImage";
+import CustomFormation from "./CustomFormation";
 
 const MainApp = () => {
   const [formation, setFormation] = useState("4-3-3");
@@ -100,7 +101,7 @@ const MainApp = () => {
       const data = await fetchedTeams.json();
       setTeam(data.players);
 
-      // setSwitchMode('fetched')
+      setSwitchMode('fetched')
       setFormation(data.formation);
       setLineupNotFound(false);
       setSuggestedLineup(data.squad);
@@ -315,6 +316,7 @@ const MainApp = () => {
             />
           }
         />
+        <Route path="/cf" element={<CustomFormation team={team}/>}/>
       </Routes>
     </div>
   );

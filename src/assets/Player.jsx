@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { data } from "../data";
 import PlayerIconSvg from "./PlayerIconSvg";
 import { imgPlaceholder } from "./assets";
@@ -15,14 +15,23 @@ const Player = ({
   setClickedPlayer,
   switchMode,
   setSwitchMode,
+  customFormation,
+  setCustomFormation,
+  customPositions,
+  setCustomPositions,
+  setClickedPlayerData,
+  clickedPlayerData,
   c,
 }) => {
+  
+  const [isDragging, setIsDragging] = useState(false);
+
   const handleClick = (e) => {
     setShowSearch(true);
     console.log(e.target.dataset.pos);
     setClickedPlayer(e.target.dataset.pos);
+    setClickedPlayerData(customTeam[pos]);
     setSwitchMode("custom");
-    console.log(switchMode);
 
     // customTeam.map((c) => {
     //     if (e.target.dataset.pos == c.idx) {
@@ -37,6 +46,7 @@ const Player = ({
   const handleDragStart = (e, index) => {
     console.log("drag start");
     e.dataTransfer.setData("pos", e.target.dataset.pos);
+    setIsDragging(true);
   };
   const handleDrag = () => {};
 
@@ -48,36 +58,83 @@ const Player = ({
   };
   const handleDrop = (e, index) => {
     e.preventDefault();
+    if (customFormation === "fixed") {
+      const newPositions = { ...positions };
+      const data1 = e.dataTransfer.getData("pos");
+      const data2 = e.target.dataset.pos;
+      // const tempPosition = newPositions[data1]?.replace(
+      //   "transition-all duration-500",
+      //   ""
+      // );
+      // newPositions[data1] = newPositions[data2]?.replace(
+      //   "transition-all duration-500",
+      //   ""
+      // );
+      // newPositions[data2] = tempPosition;
 
-    const newPositions = { ...positions };
-    const data1 = e.dataTransfer.getData("pos");
-    const data2 = e.target.dataset.pos;
-    // const tempPosition = newPositions[data1]?.replace(
-    //   "transition-all duration-500",
-    //   ""
-    // );
-    // newPositions[data1] = newPositions[data2]?.replace(
-    //   "transition-all duration-500",
-    //   ""
-    // );
-    // newPositions[data2] = tempPosition;
-
-    setPositions({
-      ...positions,
-      [data1]: positions[data2]?.replace("transition-all duration-500", ""),
-      [data2]: positions[data1]?.replace("transition-all duration-500", ""),
-    });
-    console.log(positions);
+      setPositions({
+        ...positions,
+        [data1]: positions[data2]?.replace("transition-all duration-500", ""),
+        [data2]: positions[data1]?.replace("transition-all duration-500", ""),
+      });
+      console.log(positions);
+    }
   };
   const handleDragEnd = (e) => {
     e.target.classList.remove("opacity-30");
+    if (customFormation === "custom") {
+      e.preventDefault();
+      setIsDragging(false);
+
+      const pos = e.target.dataset.pos;
+      console.log(pos);
+      const parentWidth = window.getComputedStyle(e.target.parentElement.parentElement).width
+      const parentHeight = window.getComputedStyle(e.target.parentElement.parentElement).height
+      const differenceBtwElementAndScreenTop = e.target.parentElement.parentElement.getBoundingClientRect().top
+
+      if (
+        isDragging &&
+        e.clientY < differenceBtwElementAndScreenTop + +parentHeight.slice(0,parentHeight.indexOf('p')) - 50 &&
+        e.clientY > differenceBtwElementAndScreenTop + 10 &&
+        e.clientX > (window.innerWidth - +parentWidth.slice(0,parentWidth.indexOf('p'))) / 2 + 10  &&
+        e.clientX < (window.innerWidth - +parentWidth.slice(0,parentWidth.indexOf('p'))) / 2 + +parentWidth.slice(0,parentWidth.indexOf('p')) - 30 &&
+        pos !== undefined
+      ) {
+        console.log(window.getComputedStyle(e.target.parentElement.parentElement));
+        console.log(e.clientX,e.clientY, differenceBtwElementAndScreenTop + +parentHeight.slice(0,parentHeight.indexOf('p')));
+        // const yDifference = elementTop - scrollTop
+        
+        // Calculate new position
+        const newLeft = e.clientX - (window.innerWidth - +parentWidth.slice(0,parentWidth.indexOf('p'))) / 2 - 10;
+        const newTop = e.clientY - differenceBtwElementAndScreenTop - 10;
+        console.log(newTop);
+        
+
+        // Update the positions state with the new coordinates
+        setCustomPositions({
+          ...customPositions,
+          [pos]: { left: newLeft, top: newTop },
+        });
+        console.log(positions[pos]);
+        
+      }
+    }
   };
 
   const handleDragEnter = (e) => {
     e.target.classList.add("opacity-30");
   };
   return (
-    <div className={`${style} absolute cursor-pointer cont z-20`}>
+    <div
+      className={`${
+        customFormation === "fixed" ? style : ''
+      } absolute cursor-pointer cont z-20`}
+       
+      style={customFormation === 'custom' ? {
+        left: `${customPositions[pos].left}px`,
+        top: `${customPositions[pos].top}px`,
+      } : {}}
+    >
       <div
         className={` transition-opacity duration-200 after:bg-transparent after:h-full after:w-full after:absolute after:top-0 hover:opacity-70 z-20 flex items-center flex-col gap-1`}
         onClick={handleClick}

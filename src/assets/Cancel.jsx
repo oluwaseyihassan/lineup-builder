@@ -2,7 +2,7 @@ import React from "react";
 
 const Cancel = ({ setSearchParam, searchParam, handleCancel }) => {
   return (
-    <button onClick={handleCancel} className=" h-[20px] w-[20px] rounded-full flex justify-center items-center">
+    <button onClick={handleCancel} className=" h-[20px] w-[20px] rounded-full flex justify-center items-center outline-none focus:bg-[#2c2c2c]">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="15"

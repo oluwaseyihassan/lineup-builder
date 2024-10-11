@@ -72,7 +72,7 @@ const SearchPlayer = ({
         const element = customTeam[i];
         if (element.id === newPlayer.id) {
           updatedTeam[clickedPlayer] = newPlayer;
-          updatedTeam[element.idx] = { name: "", id: null, idx: element.idx };
+          updatedTeam[element.idx] = { ...clickedPlayerData, idx: element.idx };
 
           setShowSearch(false);
         } else {
@@ -110,6 +110,20 @@ const SearchPlayer = ({
     setSearchParam("");
   };
 
+  const removePlayer = () => {
+    if (switchMode === "fetched") {
+      const updatedTeam = [...team];
+      updatedTeam[clickedPlayer] = { id: null, name: "", idx: clickedPlayer };
+      setTeam(updatedTeam);
+    }
+    if (switchMode === "custom") {
+      const updatedTeam = [...customTeam];
+      updatedTeam[clickedPlayer] = { id: null, name: "", idx: clickedPlayer };
+      setCustomTeam(updatedTeam);
+    }
+    setShowSearch(false);
+  };
+
   return (
     <div
       className={`${
@@ -137,6 +151,17 @@ const SearchPlayer = ({
           />
         )}
       </div>
+      {clickedPlayerData?.id && (
+        <button
+          onClick={() => {
+            removePlayer();
+          }}
+          className=" bg-red-500 text-white px-3 rounded-md mt-2 ml-2 text-[12px]"
+        >
+          Remove selected player
+        </button>
+      )}
+
       <div className=" overflow-y-scroll scroll_bar max-h-[500px] bg-inherit text-white mt-2 w-[300px] h-fit">
         {searchParam == "" && switchMode == "fetched" && (
           <div className=" flex gap-2 items-center px-5 mb-1">

@@ -75,9 +75,9 @@ const PreFillLineup = ({
     getTeams(e.target.dataset.id);
     if (!lineupNotFound) {
       setTeamId(e.target.dataset.id);
-      setSwitchMode("fetched");
+      // setSwitchMode("fetched");
     } else {
-      setSwitchMode("custom");
+      // setSwitchMode("custom");
     }
   };
   const handleCancel = () => {
@@ -129,14 +129,14 @@ const PreFillLineup = ({
                   {recentTeams.length > 0 ? "Recent" : "No recent Teams"}
                 </h3>
                 {recentTeams.map((r) => (
-                  <button
+                  <div
                     className="flex  items-center justify-between w-full cursor-pointer hover:bg-[#2C2C2C] px-4 py-1"
                     data-id={r.id}
                     data-name={r.name}
                     data-leaguename={r.leagueName}
                     key={r.id}
                   >
-                    <div
+                    <button
                       className=" flex items-center gap-4 w-full h-[36px]"
                       onClick={(e) => {
                         handleClick(e);
@@ -153,7 +153,7 @@ const PreFillLineup = ({
                         data-id={r.id}
                         data-name={r.name}
                         data-leaguename={r.leagueName}
-                        onError={teamImgPlaceholder}
+                        onError={(e) => (e.target.src = teamImgPlaceholder)}
                       />
                       <div
                         className=" flex flex-col text-left"
@@ -178,7 +178,7 @@ const PreFillLineup = ({
                           {r.leagueName}
                         </div>
                       </div>
-                    </div>
+                    </button>
                     <Cancel
                       handleCancel={() => {
                         setRecentTeams(
@@ -186,7 +186,7 @@ const PreFillLineup = ({
                         );
                       }}
                     />
-                  </button>
+                  </div>
                 ))}
               </div>
             )}
@@ -196,7 +196,7 @@ const PreFillLineup = ({
             {searchParam.length > 0 &&
               searchResult?.map((s) => (
                 <button
-                  className="flex gap-4 items-center w-full cursor-pointer hover:bg-[#2C2C2C] px-4 py-2"
+                  className="flex gap-4 items-center w-full cursor-pointer hover:bg-[#2C2C2C] px-4 py-2 outline-none focus:bg-[#2c2c2c]"
                   onClick={(e) => {
                     handleClick(e);
                     setShowSearch(false);
@@ -213,7 +213,7 @@ const PreFillLineup = ({
                     data-id={s.id}
                     data-name={s.name}
                     data-leaguename={s.leagueName}
-                    onError={teamImgPlaceholder}
+                    onError={(e) => (e.target.src = teamImgPlaceholder)}
                   />
                   <div
                     className=" flex flex-col text-left"
@@ -247,9 +247,9 @@ const PreFillLineup = ({
       <h5 className=" text-[12px] py-1 text-[#9F9F9F] px-3">
         Pre-fill with popular teams
       </h5>
-      <div
+      <button
         onClick={handleClick2}
-        className=" py-2 px-4 hover:bg-[#2C2C2C] cursor-pointer flex items-center gap-4"
+        className=" py-2 px-4 hover:bg-[#2C2C2C] cursor-pointer flex items-center gap-4 w-full outline-none focus:bg-[#2c2c2c]"
         data-id="8633"
       >
         <img
@@ -257,14 +257,15 @@ const PreFillLineup = ({
           src={`https://images.fotmob.com/image_resources/logo/teamlogo/8633_xsmall.png`}
           alt=""
           data-id="8633"
+          onError={(e) => (e.target.src = teamImgPlaceholder)}
         />
         <div className=" text-[14px] text-white" data-id="8633">
           Real Madrid
         </div>
-      </div>
-      <div
+      </button>
+      <button
         onClick={handleClick2}
-        className=" py-2 px-4 hover:bg-[#2C2C2C] cursor-pointer flex items-center gap-4"
+        className=" py-2 px-4 hover:bg-[#2C2C2C] cursor-pointer flex items-center gap-4 w-full outline-none focus:bg-[#2c2c2c]"
         data-id="8634"
       >
         <img
@@ -272,14 +273,15 @@ const PreFillLineup = ({
           src="https://images.fotmob.com/image_resources/logo/teamlogo/8634_xsmall.png"
           alt=""
           data-id="8634"
+          onError={(e) => (e.target.src = teamImgPlaceholder)}
         />
         <div className=" text-[12px] text-white" data-id="8634">
           Barcelona
         </div>
-      </div>
-      <div
+      </button>
+      <button
         onClick={handleClick2}
-        className=" py-2 px-4 hover:bg-[#2C2C2C] cursor-pointer flex items-center gap-4"
+        className=" py-2 px-4 hover:bg-[#2C2C2C] cursor-pointer flex items-center gap-4 w-full outline-none focus:bg-[#2c2c2c]"
         data-id="10260"
       >
         <img
@@ -287,14 +289,15 @@ const PreFillLineup = ({
           src="https://images.fotmob.com/image_resources/logo/teamlogo/10260_xsmall.png"
           alt=""
           data-id="10260"
+          onError={(e) => (e.target.src = teamImgPlaceholder)}
         />
         <div className=" text-[12px] text-white" data-id="10260">
           Manchester United
         </div>
-      </div>
-      <div
+      </button>
+      <button
         onClick={handleClick2}
-        className=" py-2 px-4 hover:bg-[#2C2C2C] cursor-pointer flex items-center gap-4"
+        className=" py-2 px-4 hover:bg-[#2C2C2C] cursor-pointer flex items-center gap-4 w-full outline-none focus:bg-[#2c2c2c]"
         data-id="8650"
       >
         <img
@@ -302,14 +305,15 @@ const PreFillLineup = ({
           src="https://images.fotmob.com/image_resources/logo/teamlogo/8650_xsmall.png"
           alt=""
           data-id="8650"
+          onError={(e) => (e.target.src = teamImgPlaceholder)}
         />
         <div className=" text-[12px] text-white" data-id="8650">
           Liverpool
         </div>
-      </div>
-      <div
+      </button>
+      <button
         onClick={handleClick2}
-        className=" py-2 px-4 hover:bg-[#2C2C2C] cursor-pointer flex items-center gap-4"
+        className=" py-2 px-4 hover:bg-[#2C2C2C] cursor-pointer flex items-center gap-4 w-full outline-none focus:bg-[#2c2c2c]"
         data-id="9825"
       >
         <img
@@ -317,14 +321,15 @@ const PreFillLineup = ({
           src="https://images.fotmob.com/image_resources/logo/teamlogo/9825_xsmall.png"
           alt=""
           data-id="9825"
+          onError={(e) => (e.target.src = teamImgPlaceholder)}
         />
         <div className=" text-[12px] text-white" data-id="9825">
           Arsenal
         </div>
-      </div>
-      <div
+      </button>
+      <button
         onClick={handleClick2}
-        className=" py-2 px-4 hover:bg-[#2C2C2C] cursor-pointer flex items-center gap-4"
+        className=" py-2 px-4 hover:bg-[#2C2C2C] cursor-pointer flex items-center gap-4 w-full outline-none focus:bg-[#2c2c2c]"
         data-id="8455"
       >
         <img
@@ -332,14 +337,15 @@ const PreFillLineup = ({
           src="https://images.fotmob.com/image_resources/logo/teamlogo/8455_xsmall.png"
           alt=""
           data-id="8455"
+          onError={(e) => (e.target.src = teamImgPlaceholder)}
         />
         <div className=" text-[12px] text-white" data-id="8455">
           Chelsea
         </div>
-      </div>
-      <div
+      </button>
+      <button
         onClick={handleClick2}
-        className=" py-2 px-4 hover:bg-[#2C2C2C] cursor-pointer flex items-center gap-4"
+        className=" py-2 px-4 hover:bg-[#2C2C2C] cursor-pointer flex items-center gap-4 w-full outline-none focus:bg-[#2c2c2c]"
         data-id="8586"
       >
         <img
@@ -347,14 +353,15 @@ const PreFillLineup = ({
           src="https://images.fotmob.com/image_resources/logo/teamlogo/8586_xsmall.png"
           alt=""
           data-id="8586"
+          onError={(e) => (e.target.src = teamImgPlaceholder)}
         />
         <div className=" text-[12px] text-white" data-id="8586">
           Tottenham
         </div>
-      </div>
-      <div
+      </button>
+      <button
         onClick={handleClick2}
-        className=" py-2 px-4 hover:bg-[#2C2C2C] cursor-pointer flex items-center gap-4"
+        className=" py-2 px-4 hover:bg-[#2C2C2C] cursor-pointer flex items-center gap-4 w-full outline-none focus:bg-[#2c2c2c]"
         data-id="8456"
       >
         <img
@@ -362,14 +369,15 @@ const PreFillLineup = ({
           src="https://images.fotmob.com/image_resources/logo/teamlogo/8456_xsmall.png"
           alt=""
           data-id="8456"
+          onError={(e) => (e.target.src = teamImgPlaceholder)}
         />
         <div className=" text-[12px] text-white" data-id="8456">
           Manchester City
         </div>
-      </div>
-      <div
+      </button>
+      <button
         onClick={handleClick2}
-        className=" py-2 px-4 hover:bg-[#2C2C2C] cursor-pointer flex items-center gap-4"
+        className=" py-2 px-4 hover:bg-[#2C2C2C] cursor-pointer flex items-center gap-4 w-full outline-none focus:bg-[#2c2c2c]"
         data-id="9823"
       >
         <img
@@ -377,14 +385,15 @@ const PreFillLineup = ({
           src="https://images.fotmob.com/image_resources/logo/teamlogo/9823_xsmall.png"
           alt=""
           data-id="9823"
+          onError={(e) => (e.target.src = teamImgPlaceholder)}
         />
         <div className=" text-[12px] text-white" data-id="9823">
           Bayern München
         </div>
-      </div>
-      <div
+      </button>
+      <button
         onClick={handleClick2}
-        className=" py-2 px-4 hover:bg-[#2C2C2C] cursor-pointer flex items-center gap-4"
+        className=" py-2 px-4 hover:bg-[#2C2C2C] cursor-pointer flex items-center gap-4 w-full outline-none focus:bg-[#2c2c2c]"
         data-id="10261"
       >
         <img
@@ -392,11 +401,12 @@ const PreFillLineup = ({
           src="https://images.fotmob.com/image_resources/logo/teamlogo/10261_xsmall.png"
           alt=""
           data-id="10261"
+          onError={(e) => (e.target.src = teamImgPlaceholder)}
         />
         <div className=" text-[12px] text-white" data-id="10261">
           Newcastle
         </div>
-      </div>
+      </button>
     </div>
   );
 };

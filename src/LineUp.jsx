@@ -14,10 +14,26 @@ const LineUp = ({
   setClickedPlayer,
   switchMode,
   setSwitchMode,
-  setClickedPlayerData
+  setClickedPlayerData,
+  customFormation,
+  setCustomFormation,
+  setCustomPositions,
+  customPositions,
 }) => {
   return (
-    <div className={`${style} absolute cursor-pointer cont z-20`}>
+    <div
+      className={`${
+        customFormation === "fixed" ? style : ""
+      } absolute cursor-pointer cont z-20`}
+      style={
+        customFormation === "custom"
+          ? {
+              left: `${customPositions[pos].left}px`,
+              top: `${customPositions[pos].top}px`,
+            }
+          : {}
+      }
+    >
       {team
         .filter((p) => p.idx == pos)
         .map((p) => (
@@ -36,6 +52,10 @@ const LineUp = ({
             setSwitchMode={setSwitchMode}
             switchMode={switchMode}
             setClickedPlayerData={setClickedPlayerData}
+            customFormation={customFormation}
+            setCustomFormation={setCustomFormation}
+            setCustomPositions={setCustomPositions}
+            customPositions={customPositions}
           />
         ))}
     </div>

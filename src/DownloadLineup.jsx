@@ -15,13 +15,16 @@ const DownloadLineup = ({
   finalFormation,
 }) => {
   const [lineup, setLineup] = useState({});
+  const [windowWidth,setWindowWidth] = useState(window.innerWidth)
 
   const { id } = useParams();
 
   useEffect(() => {
     const getLineup = async () => {
       try {
-        const res = await fetch(`https://lineup-builder-server.onrender.com/get-lineup/${id}`);
+        const res = await fetch(
+          `https://lineup-builder-server.onrender.com/get-lineup/${id}`
+        );
         const data = await res.json();
         setLineup(data);
       } catch (err) {
@@ -30,6 +33,24 @@ const DownloadLineup = ({
     };
     getLineup();
   }, [id]);
+
+ 
+  const handleWindowSizeChange = () => {
+    setWindowWidth(window.innerWidth);
+  };
+
+  useEffect(() => {
+    console.log(windowWidth);
+  }, [windowWidth]); 
+  useEffect(() => {
+    window.addEventListener('resize', handleWindowSizeChange);
+
+    return () => {
+      window.removeEventListener('resize', handleWindowSizeChange);
+    };
+  }, []);
+
+
 
   return (
     <div className=" flex justify-center items-center">
@@ -56,7 +77,13 @@ const DownloadLineup = ({
               lineup?.players.map((player, idx) => (
                 <div
                   key={idx}
-                  className={` text-[7px] sm:text-[12px] text-center text-white has-tooltip z-50 flex justify-center flex-col items-center gap-1 flex-wrap absolute ${lineup.positions[idx]}`}
+                  className={` text-[7px] sm:text-[12px] text-center text-white has-tooltip z-50 flex justify-center flex-col items-center gap-1 flex-wrap absolute ${
+                    lineup.formation === "custom" ? "" : lineup.positions[idx]
+                  }`}
+                  style={lineup.formation === 'custom' ? {
+                    left: `${(windowWidth > 780) ? lineup.positions[idx].left * 1.18 : (windowWidth > 700) ? lineup.positions[idx].left * 1.04 : (windowWidth < 640) ? lineup.positions[idx].left * 0.8 : lineup.positions[idx].left * 1.12}px`,
+                    top: `${(windowWidth > 640) ? lineup.positions[idx].top *  1.25 : lineup.positions[idx].top * 0.7}px`,
+                  } : {}}
                 >
                   <div className=" h-[32px] sm:h-[54px] sm:w-[54px] w-[32px] justify-center rounded-full bg-[white] flex items-end overflow-hidden">
                     <img

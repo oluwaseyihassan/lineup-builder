@@ -56,6 +56,20 @@ function App({
   const [recentTeams, setRecentTeams] = useState([]);
   const [savingLineup, setSavingLineup] = useState(false);
   const [recentLineups, setRecentLineups] = useState([]);
+  const [customFormation, setCustomFormation] = useState("fixed");
+  const [customPositions, setCustomPositions] = useState({
+    0: { left: 30, top: 0 },
+    1: { left: 60, top: 0 },
+    2: { left: 90, top: 0 },
+    3: { left: 120, top: 0 },
+    4: { left: 150, top: 0 },
+    5: { left: 180, top: 0 },
+    6: { left: 210, top: 0 },
+    7: { left: 240, top: 0 },
+    8: { left: 270, top: 0 },
+    9: { left: 300, top: 0 },
+    10: { left: 330, top: 0 },
+  });
 
   const componentRef = useRef();
 
@@ -192,7 +206,7 @@ function App({
     return date.toLocaleDateString("en-us", options);
   };
 
-  TimeAgo.addDefaultLocale(en);
+  TimeAgo.addLocale(en);
   const timeAgo = new TimeAgo("en-US");
 
   const changeFormation = (e) => {
@@ -205,9 +219,11 @@ function App({
     const lineup = {
       team: lineupName ? lineupName : "Lineup builder",
       players: [...finalLineup],
-      formation: formation,
-      positions: { ...positions },
+      formation: customFormation === "fixed" ? formation : "custom",
+      positions:
+        customFormation === "fixed" ? { ...positions } : { ...customPositions },
     };
+    console.log(lineup);
 
     const save = async () => {
       setSavingLineup(true);
@@ -548,29 +564,61 @@ function App({
         </div>
         <div className=" bg-[#2c2c2c] h-[1px] w-full mt-2"></div>
         <div className=" w-full flex justify-between p-4 items-center">
-          <select
-            name="formation"
-            id=""
-            value={formation}
-            onChange={changeFormation}
-            className=" bg-transparent text-[20px] w-fit outline outline-1 rounded-full outline-[#2c2c2c] px-2 text-white focus:bg-[#2C2C2C] cursor-pointer hover:bg-[#2C2C2C] scroll_bar"
+          {customFormation === "fixed" && (
+            <select
+              name="formation"
+              id=""
+              value={formation}
+              onChange={changeFormation}
+              className=" bg-transparent text-[20px] w-fit outline outline-1 rounded-full outline-[#2c2c2c] px-2 text-white focus:bg-[#2C2C2C] cursor-pointer hover:bg-[#2C2C2C] scroll_bar"
+            >
+              {options.map((option) => (
+                <option value={option.value}>{option.label}</option>
+              ))}
+            </select>
+          )}
+          <button
+            className=" text-white cursor-pointer hover:bg-[#2c2c2c] px-3 py-1 rounded-lg outline-none focus:bg-[#2c2c2c]"
+            onClick={clearLineUp}
           >
-            {options.map((option) => (
-              <option value={option.value}>{option.label}</option>
-            ))}
-          </select>
-          <button className=" text-white cursor-pointer" onClick={clearLineUp}>
             Clear Lineup
           </button>
+        </div>
+        <div className="flex justify-between px-2 gap-2 mb-2">
+          <div
+            onClick={() => {
+              setCustomFormation("fixed");
+            }}
+            className={`${
+              customFormation === "fixed" ? "bg-green-400" : ""
+            } transition-all duration-200 rounded-lg text-white w-1/2 text-center cursor-pointer text-[16px] py-1`}
+          >
+            Choose formation
+          </div>
+          <div
+            onClick={() => {
+              setCustomFormation("custom");
+            }}
+            className={`${
+              customFormation === "custom" ? "bg-green-400" : ""
+            } transition-all duration-200 rounded-lg text-white w-1/2 text-center cursor-pointer text-[16px] py-1`}
+          >
+            Custom formation
+          </div>
         </div>
         <div
           className={`bg-[#2C2C2C] m-auto sm:h-[700px] h-[500px] relative col-span-2`}
           ref={componentRef}
+          onDragOver={(e) => {
+            customFormation === "custom" && e.preventDefault();
+          }}
         >
           {loadingLineup && (
             <div
-              className={` w-full h-full absolute bg-black opacity-20 z-[100]`}
-            ></div>
+              className={` w-full h-full absolute bg-black opacity-20 z-[300] flex justify-center items-center`}
+            >
+              <Loading />
+            </div>
           )}
 
           <div className="absolute h-[44px] sm:h-[52px] w-28 sm:w-32 rounded-tl-lg rounded-tr-lg border-4 border-b-0 border-solid border-[#343434] bottom-0 left-[50%] translate-x-[-50%] z-20"></div>
@@ -593,6 +641,10 @@ function App({
                   switchMode={switchMode}
                   setClickedPlayerData={setClickedPlayerData}
                   getTeams={getTeams}
+                  customFormation={customFormation}
+                  setCustomFormation={setCustomFormation}
+                  setCustomPositions={setCustomPositions}
+                  customPositions={customPositions}
                 />
               ))}
             </>
@@ -612,12 +664,18 @@ function App({
                   setClickedPlayer={setClickedPlayer}
                   setSwitchMode={setSwitchMode}
                   switchMode={switchMode}
+                  customFormation={customFormation}
+                  setCustomFormation={setCustomFormation}
+                  setCustomPositions={setCustomPositions}
+                  customPositions={customPositions}
+                  clickedPlayerData={clickedPlayerData}
+                  setClickedPlayerData={setClickedPlayerData}
                 />
               ))}
             </>
           )}
         </div>
-        {/* <CustomFormation /> */}
+
         <div className=" p-4 flex justify-center">
           <input
             type="text"
@@ -643,7 +701,28 @@ function App({
           customTeam[8].id &&
           customTeam[9].id &&
           customTeam[10].id) ||
-          switchMode == "fetched") && (
+          (team[0] &&
+            team[0].id &&
+            team[1] &&
+            team[1].id &&
+            team[2] &&
+            team[2].id &&
+            team[3] &&
+            team[3].id &&
+            team[4] &&
+            team[4].id &&
+            team[5] &&
+            team[5].id &&
+            team[6] &&
+            team[6].id &&
+            team[7] &&
+            team[7].id &&
+            team[8] &&
+            team[8].id &&
+            team[9] &&
+            team[9].id &&
+            team[10] &&
+            team[10].id)) && (
           // <div className=" p-4 flex justify-center gap-4">
           //   <button
           //     className=" px-3 py-1 bg-[#60df6e] rounded-lg"
@@ -665,7 +744,7 @@ function App({
                 savingLineup
                   ? "cursor-not-allowed opacity-30"
                   : "cursor-pointer"
-              } hover:bg-opacity-80 w-full p-4 bg-[#60df6e] text-white flex justify-center items-center`}
+              } hover:bg-opacity-80 w-full p-4 bg-[#60df6e] flex justify-center items-center text-2xl text-black transition-all duration-500`}
               onClick={saveLineUp}
             >
               {savingLineup ? <Loading /> : "Save Lineup"}
@@ -689,31 +768,29 @@ function App({
           <div className=" text-white bg-[#1d1d1d] mt-4 rounded-xl py-4 hidden lg:block  ">
             <div className=" text-center">Recent Lineups</div>
             <div className=" overflow-y-scroll md:block max-h-[250px] scroll_bar">
-              {recentLineups
-                ?.sort((a, b) => b.createdAt - a.createdAt)
-                .map((lineup) => (
-                  <div
-                    className=" px-4 py-2 cursor-pointer hover:bg-[#2c2c2c]  flex justify-between items-center"
-                    key={lineup._id}
+              {recentLineups?.map((lineup) => (
+                <div
+                  className=" px-4 py-2 cursor-pointer hover:bg-[#2c2c2c]  flex justify-between items-center"
+                  key={lineup._id}
+                >
+                  <Link
+                    to={`/lineup/${lineup._id}`}
+                    target="_blank"
+                    className=" w-full"
                   >
-                    <Link
-                      to={`/lineup/${lineup._id}`}
-                      target="_blank"
-                      className=" w-full"
-                    >
-                      <div>{lineup.team}</div>
-                      <div className=" text-[#9F9F9F] text-xs">
-                        {timeAgo
-                          .format(new Date(`${lineup.createdAt}`))
-                          .replace("minutes", "mins")
-                          .replace("minute", "min")
-                          .replace("hour", "hr")
-                          .replace("hours", "hrs")}
-                      </div>
-                    </Link>
-                    <Cancel handleCancel={() => deleteLineup(lineup._id)} />
-                  </div>
-                ))}
+                    <div>{lineup.team}</div>
+                    <div className=" text-[#9F9F9F] text-xs">
+                      {timeAgo
+                        .format(new Date(`${lineup.createdAt}`))
+                        .replace("minutes", "mins")
+                        .replace("minute", "min")
+                        .replace("hour", "hr")
+                        .replace("hours", "hrs")}
+                    </div>
+                  </Link>
+                  <Cancel handleCancel={() => deleteLineup(lineup._id)} />
+                </div>
+              ))}
             </div>
           </div>
         )}
