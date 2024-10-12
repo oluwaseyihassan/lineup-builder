@@ -338,7 +338,7 @@ function App({
     if (window.confirm("Are you sure you want to delete this lineup?")) {
       try {
         const response = await fetch(
-          `http://localhost:5001/delete-lineup/${lineupId}`,
+          `https://lineup-builder-server.onrender.com/delete-lineup/${lineupId}`,
           {
             method: "DELETE",
           }
