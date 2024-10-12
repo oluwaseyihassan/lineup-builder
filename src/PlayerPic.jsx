@@ -160,7 +160,7 @@ const PlayerPic = ({
               src={`https://images.fotmob.com/image_resources/playerimages/${p.id}.png`}
               onError={(e) => (e.target.src = imgPlaceholder)}
               alt=""
-              className=" h-7 sm:h-12  bottom-0"
+              className=" h-8 sm:h-12  bottom-0"
               data-pos={pos}
               draggable={false}
             />
@@ -178,8 +178,8 @@ const PlayerPic = ({
       ) : (
         <>
           {/* <PlayerIconSvg /> */}
-          <div className=" h-[40px] w-[40px] justify-center rounded-full bg-[#383838] flex items-end overflow-hidden">
-            <img src={imgPlaceholder} alt="" className=" h-9 w-9 bottom-0" />
+          <div className=" h-[32px] sm:h-[52px] sm:w-[52px] w-[32px] justify-center rounded-full bg-[#383838] flex items-end overflow-hidden">
+            <img src={imgPlaceholder} alt="" className=" h-8 w-8 sm:w-12 sm:h-12 bottom-0" />
           </div>
           <div className=" text-[12px] text-center text-[#1D1D11D] bg-white rounded-full h-3 w-3 flex justify-center items-center">
             +

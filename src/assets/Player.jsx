@@ -191,12 +191,12 @@ const Player = ({
       >
         {c.id ? (
           <>
-            <div className=" h-[32px] sm:h-[40px] sm:w-[40px] w-[32px] justify-center rounded-full bg-[#383838] flex items-end overflow-hidden">
+            <div className=" h-[36px] sm:h-[52px] sm:w-[52px] w-[36px] justify-center rounded-full bg-[#383838] flex items-end overflow-hidden">
               <img
                 src={`https://images.fotmob.com/image_resources/playerimages/${c.id}.png`}
                 onError={(e) => (e.target.src = imgPlaceholder)}
                 alt=""
-                className=" h-7 sm:h-9  bottom-0"
+                className=" h-8 sm:h-12  bottom-0"
               />
             </div>
             <div className=" text-[12px] text-center text-white">
@@ -206,8 +206,8 @@ const Player = ({
         ) : (
           <>
             {/* <PlayerIconSvg /> */}
-            <div className=" h-[40px] w-[40px] justify-center rounded-full bg-[#383838] flex items-end overflow-hidden">
-              <img src={imgPlaceholder} alt="" className=" h-9 w-9 bottom-0" />
+            <div className=" h-[36px] sm:h-[52px] sm:w-[52px] w-[36px] justify-center rounded-full bg-[#383838] flex items-end overflow-hidden">
+              <img src={imgPlaceholder} alt="" className=" h-8 w-8 sm:h-12 sm:w-12 bottom-0" />
             </div>
             <div className=" text-[12px] text-center text-[#1D1D11D] bg-white rounded-full h-3 w-3 flex justify-center items-center">
               +
