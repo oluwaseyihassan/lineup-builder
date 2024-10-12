@@ -23,7 +23,6 @@ const Player = ({
   clickedPlayerData,
   c,
 }) => {
-  
   const [isDragging, setIsDragging] = useState(false);
 
   const handleClick = (e) => {
@@ -88,35 +87,68 @@ const Player = ({
 
       const pos = e.target.dataset.pos;
       console.log(pos);
-      const parentWidth = window.getComputedStyle(e.target.parentElement.parentElement).width
-      const parentHeight = window.getComputedStyle(e.target.parentElement.parentElement).height
-      const differenceBtwElementAndScreenTop = e.target.parentElement.parentElement.getBoundingClientRect().top
+      const parentWidth = window.getComputedStyle(
+        e.target.parentElement.parentElement
+      ).width;
+      const parentHeight = window.getComputedStyle(
+        e.target.parentElement.parentElement
+      ).height;
+      const differenceBtwElementAndScreenTop =
+        e.target.parentElement.parentElement.getBoundingClientRect().top;
 
       if (
         isDragging &&
-        e.clientY < differenceBtwElementAndScreenTop + +parentHeight.slice(0,parentHeight.indexOf('p')) - 50 &&
+        e.clientY <
+          differenceBtwElementAndScreenTop +
+            +parentHeight.slice(0, parentHeight.indexOf("p")) -
+            50 &&
         e.clientY > differenceBtwElementAndScreenTop + 10 &&
-        e.clientX > (window.innerWidth - +parentWidth.slice(0,parentWidth.indexOf('p'))) / 2 + 10  &&
-        e.clientX < (window.innerWidth - +parentWidth.slice(0,parentWidth.indexOf('p'))) / 2 + +parentWidth.slice(0,parentWidth.indexOf('p')) - 30 &&
+        e.clientX >
+          (window.innerWidth -
+            +parentWidth.slice(0, parentWidth.indexOf("p"))) /
+            2 +
+            20 &&
+        e.clientX <
+          (window.innerWidth -
+            +parentWidth.slice(0, parentWidth.indexOf("p"))) /
+            2 +
+            +parentWidth.slice(0, parentWidth.indexOf("p")) -
+            40 &&
         pos !== undefined
       ) {
-        console.log(window.getComputedStyle(e.target.parentElement.parentElement));
-        console.log(e.clientX,e.clientY, differenceBtwElementAndScreenTop + +parentHeight.slice(0,parentHeight.indexOf('p')));
+        console.log(
+          window.getComputedStyle(e.target.parentElement.parentElement)
+        );
+        console.log(
+          e.clientX,
+          e.clientY,
+          differenceBtwElementAndScreenTop +
+            +parentHeight.slice(0, parentHeight.indexOf("p"))
+        );
         // const yDifference = elementTop - scrollTop
-        
+
         // Calculate new position
-        const newLeft = e.clientX - (window.innerWidth - +parentWidth.slice(0,parentWidth.indexOf('p'))) / 2 - 10;
+        const newLeft =
+          e.clientX -
+          (window.innerWidth -
+            +parentWidth.slice(0, parentWidth.indexOf("p"))) /
+            2 -
+          10;
         const newTop = e.clientY - differenceBtwElementAndScreenTop - 10;
-        console.log(newTop);
-        
+        const finalLeft =
+          (newLeft / +parentWidth.slice(0, parentWidth.indexOf("p"))) * 100;
+        const finalTop =
+          (newTop / +parentHeight.slice(0, parentHeight.indexOf("p"))) * 100;
+        console.log(
+          (newTop / +parentHeight.slice(0, parentHeight.indexOf("p"))) * 100
+        );
 
         // Update the positions state with the new coordinates
         setCustomPositions({
           ...customPositions,
-          [pos]: { left: newLeft, top: newTop },
+          [pos]: { left: finalLeft, top: finalTop },
         });
         console.log(positions[pos]);
-        
       }
     }
   };
@@ -127,13 +159,16 @@ const Player = ({
   return (
     <div
       className={`${
-        customFormation === "fixed" ? style : ''
+        customFormation === "fixed" ? style : ""
       } absolute cursor-pointer cont z-20`}
-       
-      style={customFormation === 'custom' ? {
-        left: `${customPositions[pos].left}px`,
-        top: `${customPositions[pos].top}px`,
-      } : {}}
+      style={
+        customFormation === "custom"
+          ? {
+              left: `${customPositions[pos].left}%`,
+              top: `${customPositions[pos].top}%`,
+            }
+          : {}
+      }
     >
       <div
         className={` transition-opacity duration-200 after:bg-transparent after:h-full after:w-full after:absolute after:top-0 hover:opacity-70 z-20 flex items-center flex-col gap-1`}

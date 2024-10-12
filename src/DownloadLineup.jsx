@@ -81,8 +81,8 @@ const DownloadLineup = ({
                     lineup.formation === "custom" ? "" : lineup.positions[idx]
                   }`}
                   style={lineup.formation === 'custom' ? {
-                    left: `${(windowWidth > 780) ? lineup.positions[idx].left * 1.18 : (windowWidth > 700) ? lineup.positions[idx].left * 1.04 : (windowWidth < 640) ? lineup.positions[idx].left * 0.8 : lineup.positions[idx].left * 1.12}px`,
-                    top: `${(windowWidth > 640) ? lineup.positions[idx].top *  1.25 : lineup.positions[idx].top * 0.7}px`,
+                    left: `${lineup.positions[idx].left}%`,
+                    top: `${lineup.positions[idx].top}%`,
                   } : {}}
                 >
                   <div className=" h-[32px] sm:h-[54px] sm:w-[54px] w-[32px] justify-center rounded-full bg-[white] flex items-end overflow-hidden">

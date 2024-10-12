@@ -58,17 +58,17 @@ function App({
   const [recentLineups, setRecentLineups] = useState([]);
   const [customFormation, setCustomFormation] = useState("fixed");
   const [customPositions, setCustomPositions] = useState({
-    0: { left: 30, top: 0 },
-    1: { left: 60, top: 0 },
-    2: { left: 90, top: 0 },
-    3: { left: 120, top: 0 },
-    4: { left: 150, top: 0 },
-    5: { left: 180, top: 0 },
-    6: { left: 210, top: 0 },
-    7: { left: 240, top: 0 },
-    8: { left: 270, top: 0 },
-    9: { left: 300, top: 0 },
-    10: { left: 330, top: 0 },
+    0: { left: 5, top: 0 },
+    1: { left: 10, top: 0 },
+    2: { left: 15, top: 0 },
+    3: { left: 20, top: 0 },
+    4: { left: 25, top: 0 },
+    5: { left: 30, top: 0 },
+    6: { left: 35, top: 0 },
+    7: { left: 40, top: 0 },
+    8: { left: 45, top: 0 },
+    9: { left: 50, top: 0 },
+    10: { left: 55, top: 0 },
   });
 
   const componentRef = useRef();
@@ -240,7 +240,11 @@ function App({
         );
         const data = await res.json();
         setSavingLineup(false);
-        setRecentLineups([...recentLineups, data]);
+        setRecentLineups(
+          [...recentLineups, data].sort(
+            (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+          )
+        );
         window.open(`/lineup/${data._id}`);
       } catch (err) {
         console.log(err);

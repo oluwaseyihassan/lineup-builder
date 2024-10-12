@@ -78,13 +78,13 @@ const PlayerPic = ({
           (window.innerWidth -
             +parentWidth.slice(0, parentWidth.indexOf("p"))) /
             2 +
-            10 &&
+            20 &&
         e.clientX <
           (window.innerWidth -
             +parentWidth.slice(0, parentWidth.indexOf("p"))) /
             2 +
             +parentWidth.slice(0, parentWidth.indexOf("p")) -
-            30 &&
+            40 &&
         pos !== undefined
       ) {
         console.log(
@@ -106,12 +106,16 @@ const PlayerPic = ({
             2 -
           10;
         const newTop = e.clientY - differenceBtwElementAndScreenTop - 10;
+        const finalLeft =
+          (newLeft / +parentWidth.slice(0, parentWidth.indexOf("p"))) * 100;
+        const finalTop =
+          (newTop / +parentHeight.slice(0, parentHeight.indexOf("p"))) * 100;
         console.log(newTop);
 
         // Update the positions state with the new coordinates
         setCustomPositions({
           ...customPositions,
-          [pos]: { left: newLeft, top: newTop },
+          [pos]: { left: finalLeft, top: finalTop },
         });
         console.log(positions[pos]);
       }
@@ -151,12 +155,12 @@ const PlayerPic = ({
     >
       {p.id ? (
         <>
-          <div className=" h-[32px] sm:h-[40px] sm:w-[40px] w-[32px] justify-center rounded-full bg-[#383838] flex items-end overflow-hidden">
+          <div className=" h-[32px] sm:h-[52px] sm:w-[52px] w-[32px] justify-center rounded-full bg-[#383838] flex items-end overflow-hidden">
             <img
               src={`https://images.fotmob.com/image_resources/playerimages/${p.id}.png`}
               onError={(e) => (e.target.src = imgPlaceholder)}
               alt=""
-              className=" h-7 sm:h-9  bottom-0"
+              className=" h-7 sm:h-12  bottom-0"
               data-pos={pos}
               draggable={false}
             />

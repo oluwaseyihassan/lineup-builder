@@ -28,8 +28,8 @@ const LineUp = ({
       style={
         customFormation === "custom"
           ? {
-              left: `${customPositions[pos].left}px`,
-              top: `${customPositions[pos].top}px`,
+              left: `${customPositions[pos].left}%`,
+              top: `${customPositions[pos].top}%`,
             }
           : {}
       }
