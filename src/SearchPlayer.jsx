@@ -22,6 +22,120 @@ const SearchPlayer = ({
 }) => {
   const [searchParam, setSearchParam] = useState("");
   const [searchResult, setSearchResult] = useState([]);
+  const [restorePlayer, setRestorePlayer] = useState([
+    {
+      id: null,
+      name: "",
+      idx: 0,
+    },
+    {
+      id: null,
+      name: "",
+      idx: 1,
+    },
+    {
+      id: null,
+      name: "",
+      idx: 2,
+    },
+    {
+      id: null,
+      name: "",
+      idx: 3,
+    },
+    {
+      id: null,
+      name: "",
+      idx: 4,
+    },
+    {
+      id: null,
+      name: "",
+      idx: 5,
+    },
+    {
+      id: null,
+      name: "",
+      idx: 6,
+    },
+    {
+      id: null,
+      name: "",
+      idx: 7,
+    },
+    {
+      id: null,
+      name: "",
+      idx: 8,
+    },
+    {
+      id: null,
+      name: "",
+      idx: 9,
+    },
+    {
+      id: null,
+      name: "",
+      idx: 10,
+    },
+  ]);
+  const [restoreCustomPlayer, setRestoreCustomPlayer] = useState([
+    {
+      id: null,
+      name: "",
+      idx: 0,
+    },
+    {
+      id: null,
+      name: "",
+      idx: 1,
+    },
+    {
+      id: null,
+      name: "",
+      idx: 2,
+    },
+    {
+      id: null,
+      name: "",
+      idx: 3,
+    },
+    {
+      id: null,
+      name: "",
+      idx: 4,
+    },
+    {
+      id: null,
+      name: "",
+      idx: 5,
+    },
+    {
+      id: null,
+      name: "",
+      idx: 6,
+    },
+    {
+      id: null,
+      name: "",
+      idx: 7,
+    },
+    {
+      id: null,
+      name: "",
+      idx: 8,
+    },
+    {
+      id: null,
+      name: "",
+      idx: 9,
+    },
+    {
+      id: null,
+      name: "",
+      idx: 10,
+    },
+  ]);
   useEffect(() => {
     const getTeams = async () => {
       try {
@@ -111,24 +225,58 @@ const SearchPlayer = ({
   };
 
   const removePlayer = () => {
+    let updatedTeam, updatedRestored;
+
     if (switchMode === "fetched") {
-      const updatedTeam = [...team];
+      // Handle 'fetched' mode
+      updatedTeam = [...team];
+      updatedRestored = [...restorePlayer];
+      updatedRestored[clickedPlayer] = team[clickedPlayer];
+      setRestorePlayer(updatedRestored);
+
       updatedTeam[clickedPlayer] = { id: null, name: "", idx: clickedPlayer };
       setTeam(updatedTeam);
-    }
-    if (switchMode === "custom") {
-      const updatedTeam = [...customTeam];
+    } else if (switchMode === "custom") {
+      // Handle 'custom' mode
+      updatedTeam = [...customTeam];
+      updatedRestored = [...restoreCustomPlayer];
+      updatedRestored[clickedPlayer] = customTeam[clickedPlayer];
+      setRestoreCustomPlayer(updatedRestored);
+
       updatedTeam[clickedPlayer] = { id: null, name: "", idx: clickedPlayer };
       setCustomTeam(updatedTeam);
     }
+
+    // Hide the search regardless of the mode
     setShowSearch(false);
   };
+
+  const restorePlayerFunc = () => {
+    if (switchMode === "fetched") {
+      const updatedTeam = [...team];
+      updatedTeam[clickedPlayer] = restorePlayer[clickedPlayer];
+      setTeam(updatedTeam);
+      // setRestorePlayer(null)
+    }
+    if (switchMode === "custom") {
+      const updatedTeam = [...customTeam];
+      updatedTeam[clickedPlayer] = restoreCustomPlayer[clickedPlayer];
+      setCustomTeam(updatedTeam);
+      // setRestorePlayer(null)
+    }
+    setShowSearch(false);
+  };
+
+  const shouldShowRestoreButton =
+    switchMode === "fetched"
+      ? restorePlayer[clickedPlayer]?.id && !clickedPlayerData?.id
+      : restoreCustomPlayer[clickedPlayer]?.id && !clickedPlayerData?.id;
 
   return (
     <div
       className={`${
         showSearch ? "block" : "hidden"
-      } fixed left-[50%] translate-x-[-50%] top-[50%] translate-y-[-50%] z-40 h-[70%] sm:h-[400px] md:h-[500px] bg-[#1D1D1D]   rounded-md mt-1 py-4`}
+      } fixed left-[50%] translate-x-[-50%] top-[50%] translate-y-[-50%] z-40  bg-[#1D1D1D]   rounded-md mt-1 pt-4`}
     >
       <div className=" px-3 flex bg-[#2C2C2C] rounded-full w-[94%] py-1 items-center m-auto">
         <SearchSvg />
@@ -161,8 +309,15 @@ const SearchPlayer = ({
           Remove selected player
         </button>
       )}
-
-      <div className=" overflow-y-scroll scroll_bar max-h-[500px] bg-inherit text-white mt-2 w-[300px] h-fit">
+      {shouldShowRestoreButton && (
+        <button
+          onClick={restorePlayerFunc}
+          className="bg-green-500 text-white px-3 rounded-md mt-2 ml-2 text-[12px]"
+        >
+          Restore removed player
+        </button>
+      )}
+      <div className=" overflow-y-scroll scroll_bar h-[400px] md:h-[500px] bg-inherit text-white mt-2 w-[300px]">
         {searchParam == "" && switchMode == "fetched" && (
           <div className=" flex gap-2 items-center px-5 mb-1">
             <img

@@ -151,7 +151,7 @@ const PlayerPic = ({
       onDragEnter={handleDragEnter}
       onDrag={handleDrag}
       //   onMouseOver={handleMouseOver}
-      className={` transition-opacity gap-1  duration-200 after:bg-transparent after:h-full after:w-full after:absolute after:top-0 flex flex-col items-center focus:opacity-30 hover:opacity-30 outline-none justify-center`}
+      className={` transition-opacity gap-1  duration-200 after:bg-transparent after:h-full after:w-full after:absolute after:top-0 flex flex-col items-center focus:opacity-30 hover:opacity-30 outline-none justify-center w-10`}
     >
       {p.id ? (
         <>

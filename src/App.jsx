@@ -349,6 +349,7 @@ function App({
         );
         if (!response.ok) {
           throw new Error("Failed to delete lineup");
+          
         }
         alert("Lineup deleted successfully");
         setRecentLineups(
@@ -357,6 +358,7 @@ function App({
         // Optionally redirect or update the UI after deletion
       } catch (err) {
         console.log(err);
+        alert(err)
       }
     }
   };
@@ -588,7 +590,7 @@ function App({
             Clear Lineup
           </button>
         </div>
-        <div className="flex justify-between px-2 gap-2 mb-2">
+        <div className="lg:flex hidden justify-between px-2 gap-2 mb-2">
           <div
             onClick={() => {
               setCustomFormation("fixed");
