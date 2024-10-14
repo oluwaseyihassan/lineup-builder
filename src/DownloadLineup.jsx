@@ -16,6 +16,7 @@ const DownloadLineup = ({
   finalFormation,
 }) => {
   const componentRef = useRef();
+  const imageRef = useRef();
 
   const [lineup, setLineup] = useState({});
   const [windowWidth,setWindowWidth] = useState(window.innerWidth)
@@ -52,17 +53,39 @@ const DownloadLineup = ({
   }, []);
 
   const handleCapture = async () => {
+    await loadImages()
     html2canvas(componentRef.current)
       .then((canvas) => {
         const link = document.createElement("a");
         link.href = canvas.toDataURL("image/png");
-        link.download = "component-image.png";
+        link.download = "lineup.png";
         link.click();
       })
       .catch((err) => {
         console.error("Error capturing the image:", err);
       });
   };
+
+  const loadImages = () => {
+    // Function to ensure all images are loaded before taking the screenshot
+    return new Promise((resolve) => {
+      const images = imageRef.current.querySelectorAll('img');
+      let loadedCount = 0;
+      if (images.length === 0) resolve(); // No images present
+
+      images.forEach((img) => {
+        if (img.complete) {
+          loadedCount++;
+          if (loadedCount === images.length) resolve();
+        } else {
+          img.addEventListener('load', () => {
+            loadedCount++;
+            if (loadedCount === images.length) resolve();
+          });
+        }
+      });
+    });
+  }
 
 
 
@@ -104,6 +127,7 @@ const DownloadLineup = ({
                       src={`https://images.fotmob.com/image_resources/playerimages/${player.id}.png`}
                       alt=""
                       className="h-7 sm:h-[50px]  bottom-0"
+                      ref={imageRef}
                     />
                   </div>
                   <div className=" text-[10px] sm:text-[16px] text-center text-white has-tooltip z-50 flex justify-center flex-wrap">

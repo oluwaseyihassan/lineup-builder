@@ -17,9 +17,11 @@ const PreFillLineup = ({
   const [searchResult, setSearchResult] = useState([]);
 
   const ref = useRef(null);
+  const inputRef = useRef(null);
+
 
   const handleClickAway = (e) => {
-    if (ref.current && !ref.current.contains(e.target)) {
+    if (ref.current && inputRef.current && !ref.current.contains(e.target) && !inputRef.current.contains(e.target)) {
       setShowSearch(false);
     }
   };
@@ -53,9 +55,9 @@ const PreFillLineup = ({
     getTeams(e.target.dataset.id);
     if (!lineupNotFound) {
       setTeamId(e.target.dataset.id);
-      setSwitchMode("fetched");
+      // setSwitchMode("fetched");
     } else {
-      setSwitchMode("custom");
+      // setSwitchMode("custom");
     }
 
     const newRecentTeam = {
@@ -90,7 +92,10 @@ const PreFillLineup = ({
         Choose a team to edit
       </h5>
       <div className="relative mb-1 px-3">
-        <div className="flex bg-[#2C2C2C] rounded-full items-center px-3 py-1">
+        <div
+          className="flex bg-[#2C2C2C] rounded-full items-center px-3 py-1"
+          ref={inputRef}
+        >
           <SearchSvg />
           <input
             className=" bg-transparent outline-none indent-1 text-[12px] py-[4px] w-full"
@@ -115,7 +120,7 @@ const PreFillLineup = ({
           className={`${
             showSearch ? "block" : "hidden"
           } absolute bg-[#1D1D1D] shadow-md w-[90%] overflow-y-scroll scroll_bar max-h-[500px] mt-1 py-2 rounded-xl min-h-[350px]`}
-          ref={ref}
+           ref={ref}
         >
           <div className="">
             {searchParam.length > 0 && !searchResult && (
@@ -140,7 +145,7 @@ const PreFillLineup = ({
                       className=" flex items-center gap-4 w-full h-[36px]"
                       onClick={(e) => {
                         handleClick(e);
-                        setShowSearch(false);
+                        // setShowSearch(false);
                       }}
                       data-id={r.id}
                       data-name={r.name}

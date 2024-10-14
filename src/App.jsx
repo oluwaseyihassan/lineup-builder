@@ -576,8 +576,8 @@ function App({
               onChange={changeFormation}
               className=" bg-transparent text-[20px] w-fit outline outline-1 rounded-full outline-[#2c2c2c] px-2 text-white focus:bg-[#2C2C2C] cursor-pointer hover:bg-[#2C2C2C] scroll_bar"
             >
-              {options.map((option) => (
-                <option value={option.value}>{option.label}</option>
+              {options.map((option,i) => (
+                <option key={i} value={option.value}>{option.label}</option>
               ))}
             </select>
           )}
@@ -594,8 +594,8 @@ function App({
               setCustomFormation("fixed");
             }}
             className={`${
-              customFormation === "fixed" ? "bg-green-400" : ""
-            } transition-all duration-200 rounded-lg text-white w-1/2 text-center cursor-pointer text-[16px] py-1`}
+              customFormation === "fixed" ? "bg-green-400 text-black" : "text-white"
+            } transition-all duration-200 rounded-lg  w-1/2 text-center cursor-pointer text-[16px] py-1`}
           >
             Choose formation
           </div>
@@ -604,8 +604,8 @@ function App({
               setCustomFormation("custom");
             }}
             className={`${
-              customFormation === "custom" ? "bg-green-400" : ""
-            } transition-all duration-200 rounded-lg text-white w-1/2 text-center cursor-pointer text-[16px] py-1`}
+              customFormation === "custom" ? "bg-green-400 text-black" : " text-white"
+            } transition-all duration-200 rounded-lg  w-1/2 text-center cursor-pointer text-[16px] py-1`}
           >
             Custom formation
           </div>
@@ -649,6 +649,7 @@ function App({
                   setCustomFormation={setCustomFormation}
                   setCustomPositions={setCustomPositions}
                   customPositions={customPositions}
+                  key={index}
                 />
               ))}
             </>
@@ -674,6 +675,7 @@ function App({
                   customPositions={customPositions}
                   clickedPlayerData={clickedPlayerData}
                   setClickedPlayerData={setClickedPlayerData}
+                  key={index}
                 />
               ))}
             </>
@@ -748,7 +750,7 @@ function App({
                 savingLineup
                   ? "cursor-not-allowed opacity-30"
                   : "cursor-pointer"
-              } hover:bg-opacity-80 w-full p-4 bg-[#60df6e] flex justify-center items-center text-2xl text-black transition-all duration-500`}
+              } hover:bg-opacity-80 w-full p-2 sm:p-4 bg-[#60df6e] flex justify-center items-center text-lg sm:text-2xl text-black transition-all duration-500`}
               onClick={saveLineUp}
             >
               {savingLineup ? <Loading /> : "Save Lineup"}
