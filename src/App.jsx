@@ -223,7 +223,6 @@ function App({
       positions:
         customFormation === "fixed" ? { ...positions } : { ...customPositions },
     };
-    console.log(lineup);
 
     const save = async () => {
       setSavingLineup(true);
@@ -355,7 +354,6 @@ function App({
         setRecentLineups(
           recentLineups.filter((lineup) => lineup._id !== lineupId)
         );
-        // Optionally redirect or update the UI after deletion
       } catch (err) {
         console.log(err);
         alert(err)

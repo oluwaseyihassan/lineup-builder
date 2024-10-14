@@ -112,9 +112,7 @@ const MainApp = () => {
       setErrorAlert(error.error);
     }
   };
-  // useEffect(() => {
-
-  // }, [teamId]);
+ 
 
   useEffect(() => {
     switch (formation) {

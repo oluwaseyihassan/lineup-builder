@@ -31,16 +31,6 @@ const Player = ({
     setClickedPlayer(e.target.dataset.pos);
     setClickedPlayerData(customTeam[pos]);
     setSwitchMode("custom");
-
-    // customTeam.map((c) => {
-    //     if (e.target.dataset.pos == c.idx) {
-    //         c['name'] = 'paragon'
-    //         console.log(customTeam);
-
-    //     console.log(c);
-    //     }
-
-    // })
   };
   const handleDragStart = (e, index) => {
     console.log("drag start");
@@ -61,15 +51,6 @@ const Player = ({
       const newPositions = { ...positions };
       const data1 = e.dataTransfer.getData("pos");
       const data2 = e.target.dataset.pos;
-      // const tempPosition = newPositions[data1]?.replace(
-      //   "transition-all duration-500",
-      //   ""
-      // );
-      // newPositions[data1] = newPositions[data2]?.replace(
-      //   "transition-all duration-500",
-      //   ""
-      // );
-      // newPositions[data2] = tempPosition;
 
       setPositions({
         ...positions,
@@ -127,7 +108,6 @@ const Player = ({
         );
         // const yDifference = elementTop - scrollTop
 
-        // Calculate new position
         const newLeft =
           e.clientX -
           (window.innerWidth -
@@ -143,7 +123,6 @@ const Player = ({
           (newTop / +parentHeight.slice(0, parentHeight.indexOf("p"))) * 100
         );
 
-        // Update the positions state with the new coordinates
         setCustomPositions({
           ...customPositions,
           [pos]: { left: finalLeft, top: finalTop },
@@ -207,7 +186,11 @@ const Player = ({
           <>
             {/* <PlayerIconSvg /> */}
             <div className=" h-[36px] sm:h-[52px] sm:w-[52px] w-[36px] justify-center rounded-full bg-[#383838] flex items-end overflow-hidden">
-              <img src={imgPlaceholder} alt="" className=" h-8 w-8 sm:h-12 sm:w-12 bottom-0" />
+              <img
+                src={imgPlaceholder}
+                alt=""
+                className=" h-8 w-8 sm:h-12 sm:w-12 bottom-0"
+              />
             </div>
             <div className=" text-[12px] text-center text-[#1D1D11D] bg-white rounded-full h-3 w-3 flex justify-center items-center">
               +

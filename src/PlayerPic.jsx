@@ -57,7 +57,6 @@ const PlayerPic = ({
       setIsDragging(false);
 
       const pos = e.target.dataset.pos;
-      console.log(pos);
       const parentWidth = window.getComputedStyle(
         e.target.parentElement.parentElement
       ).width;
@@ -87,18 +86,8 @@ const PlayerPic = ({
             40 &&
         pos !== undefined
       ) {
-        console.log(
-          window.getComputedStyle(e.target.parentElement.parentElement)
-        );
-        console.log(
-          e.clientX,
-          e.clientY,
-          differenceBtwElementAndScreenTop +
-            +parentHeight.slice(0, parentHeight.indexOf("p"))
-        );
         // const yDifference = elementTop - scrollTop
 
-        // Calculate new position
         const newLeft =
           e.clientX -
           (window.innerWidth -
@@ -110,14 +99,11 @@ const PlayerPic = ({
           (newLeft / +parentWidth.slice(0, parentWidth.indexOf("p"))) * 100;
         const finalTop =
           (newTop / +parentHeight.slice(0, parentHeight.indexOf("p"))) * 100;
-        console.log(newTop);
 
-        // Update the positions state with the new coordinates
         setCustomPositions({
           ...customPositions,
           [pos]: { left: finalLeft, top: finalTop },
         });
-        console.log(positions[pos]);
       }
     }
   };
@@ -179,7 +165,11 @@ const PlayerPic = ({
         <>
           {/* <PlayerIconSvg /> */}
           <div className=" h-[32px] sm:h-[52px] sm:w-[52px] w-[32px] justify-center rounded-full bg-[#383838] flex items-end overflow-hidden">
-            <img src={imgPlaceholder} alt="" className=" h-8 w-8 sm:w-12 sm:h-12 bottom-0" />
+            <img
+              src={imgPlaceholder}
+              alt=""
+              className=" h-8 w-8 sm:w-12 sm:h-12 bottom-0"
+            />
           </div>
           <div className=" text-[12px] text-center text-[#1D1D11D] bg-white rounded-full h-3 w-3 flex justify-center items-center">
             +

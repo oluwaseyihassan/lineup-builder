@@ -42,9 +42,7 @@ const DownloadLineup = ({
     setWindowWidth(window.innerWidth);
   };
 
-  useEffect(() => {
-    console.log(windowWidth);
-  }, [windowWidth]); 
+
   useEffect(() => {
     window.addEventListener('resize', handleWindowSizeChange);
 

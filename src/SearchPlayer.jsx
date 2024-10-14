@@ -172,7 +172,7 @@ const SearchPlayer = ({
     };
 
     const isPlayerAlreadyAdded = recentPlayers.some(
-      (p) => p.id === newRecentPlayers.id
+      (p) => p.id == newRecentPlayers.id
     );
 
     if (!isPlayerAlreadyAdded) {
@@ -181,10 +181,19 @@ const SearchPlayer = ({
 
     if (switchMode === "custom") {
       const updatedTeam = [...customTeam];
+      for (let i = 0; i < restoreCustomPlayer.length; i++) {
+        const element = restoreCustomPlayer[i];
+
+        if (element.id == newPlayer.id) {
+          let restoreCustom = [...restoreCustomPlayer];
+          restoreCustom[element.idx] = { name: "", id: "", idx: element.idx };
+          setRestoreCustomPlayer(restoreCustom);
+        }
+      }
 
       for (let i = 0; i < customTeam.length; i++) {
         const element = customTeam[i];
-        if (element.id === newPlayer.id) {
+        if (element.id == newPlayer.id) {
           updatedTeam[clickedPlayer] = newPlayer;
           updatedTeam[element.idx] = { ...clickedPlayerData, idx: element.idx };
 
@@ -196,8 +205,18 @@ const SearchPlayer = ({
         }
       }
     }
+
     if (switchMode === "fetched") {
       const updatedTeam2 = [...team];
+      for (let i = 0; i < restorePlayer.length; i++) {
+        const element = restorePlayer[i];
+
+        if (element.id == newPlayer.id) {
+          let restore = [...restorePlayer];
+          restore[element.idx] = { name: "", id: "", idx: element.idx };
+          setRestorePlayer(restore);
+        }
+      }
 
       for (let i = 0; i < team.length; i++) {
         const element = team[i];
@@ -228,7 +247,6 @@ const SearchPlayer = ({
     let updatedTeam, updatedRestored;
 
     if (switchMode === "fetched") {
-      // Handle 'fetched' mode
       updatedTeam = [...team];
       updatedRestored = [...restorePlayer];
       updatedRestored[clickedPlayer] = team[clickedPlayer];
@@ -237,7 +255,6 @@ const SearchPlayer = ({
       updatedTeam[clickedPlayer] = { id: null, name: "", idx: clickedPlayer };
       setTeam(updatedTeam);
     } else if (switchMode === "custom") {
-      // Handle 'custom' mode
       updatedTeam = [...customTeam];
       updatedRestored = [...restoreCustomPlayer];
       updatedRestored[clickedPlayer] = customTeam[clickedPlayer];
@@ -247,7 +264,6 @@ const SearchPlayer = ({
       setCustomTeam(updatedTeam);
     }
 
-    // Hide the search regardless of the mode
     setShowSearch(false);
   };
 
@@ -256,13 +272,11 @@ const SearchPlayer = ({
       const updatedTeam = [...team];
       updatedTeam[clickedPlayer] = restorePlayer[clickedPlayer];
       setTeam(updatedTeam);
-      // setRestorePlayer(null)
     }
     if (switchMode === "custom") {
       const updatedTeam = [...customTeam];
       updatedTeam[clickedPlayer] = restoreCustomPlayer[clickedPlayer];
       setCustomTeam(updatedTeam);
-      // setRestorePlayer(null)
     }
     setShowSearch(false);
   };
