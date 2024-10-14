@@ -557,6 +557,7 @@ function App({
             Start by clicking on an empty player and searching for the player
             you want to add, or by selecting a team to pre-fill and modify.
           </p>
+          <p className=" text-center mt-5">Built by Paragon 😌</p>
         </div>
       </div>
       <div className=" col-span-2 rounded-xl overflow-hidden bg-[#1d1d1d]">
@@ -769,6 +770,7 @@ function App({
             Start by clicking on an empty player and searching for the player
             you want to add, or by selecting a team to pre-fill and modify.
           </p>
+          <p className=" text-center mt-5">Built by Paragon 😌</p>
         </div>
         {recentLineups.length > 0 && (
           <div className=" text-white bg-[#1d1d1d] mt-4 rounded-xl py-4 hidden lg:block  ">
