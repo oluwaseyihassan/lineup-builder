@@ -5,7 +5,7 @@ import { Routes, Route } from "react-router-dom";
 import DownloadLineup from "./DownloadLineup";
 import DownloadImage from "./DownloadImage";
 import CustomFormation from "./CustomFormation";
-import Practice from "./Practice";
+// import Practice from "./Practice";
 
 const MainApp = () => {
   const [formation, setFormation] = useState("4-3-3");
