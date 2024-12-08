@@ -145,6 +145,7 @@ const Player = ({
           ? {
               left: `${customPositions[pos].left}%`,
               top: `${customPositions[pos].top}%`,
+              transform: 'translateX(-50%)'
             }
           : {}
       }

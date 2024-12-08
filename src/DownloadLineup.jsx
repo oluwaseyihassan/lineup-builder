@@ -97,6 +97,7 @@ const DownloadLineup = ({
           <div className=" text-base">{lineup?.formation}</div>
         </div>
         <div className=" bg-green-700 relative h-[500px] sm:h-[880px] overflow-hidden sm:border-l-4 sm:border-t-[2px] border-t-[1.5px] sm:border-r-4 sm:border-b-4 border-l-[3px] border-r-[3px] border-b-[3px] border-opacity-30  border-solid border-white">
+          <div className=" absolute text-[100px] md:text-[200px] opacity-[.03] top-[100px] md:top-[200px] -rotate-45">paragon</div>
           <div className="absolute w-full h-[50px] sm:h-[88px] sm:top-0 top-[0px] bg-black bg-opacity-5"></div>
           <div className="absolute w-full h-[50px] sm:h-[88px] sm:top-[176px] top-[100px] bg-black bg-opacity-5"></div>
           <div className="absolute w-full h-[50px] sm:h-[88px] sm:top-[352px] top-[200px] bg-black bg-opacity-5"></div>

@@ -53,6 +53,7 @@ const PreFillLineup = ({
   }, [searchParam]);
   const handleClick = (e) => {
     getTeams(e.target.dataset.id);
+    console.log(e.target.dataset.id);
     if (!lineupNotFound) {
       setTeamId(e.target.dataset.id);
       // setSwitchMode("fetched");

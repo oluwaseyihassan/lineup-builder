@@ -5,6 +5,7 @@ import { Routes, Route } from "react-router-dom";
 import DownloadLineup from "./DownloadLineup";
 import DownloadImage from "./DownloadImage";
 import CustomFormation from "./CustomFormation";
+import Practice from "./Practice";
 
 const MainApp = () => {
   const [formation, setFormation] = useState("4-3-3");
@@ -22,10 +23,10 @@ const MainApp = () => {
   const [finalFormation, setFinalFormation] = useState([]);
   const [positions, setPositions] = useState({
     0: "top-[85%] left-[50%] translate-x-[-50%] transition-all duration-500",
-    1: "top-[65%] right-[7%] transition-all duration-500",
+    1: "top-[65%] left-[90%] translate-x-[-50%] transition-all duration-500",
     2: "top-[65%] right-[32%] transition-all duration-500",
     3: "top-[65%] left-[32%] transition-all duration-500",
-    4: "top-[65%] left-[7%] transition-all duration-500",
+    4: "top-[65%] left-[10%] transition-all duration-500",
     5: "top-[38%] left-[50%] translate-x-[-50%] transition-all duration-500",
     6: "top-[38%] left-[15%] transition-all duration-500",
     7: "top-[10%] right-[15%] transition-all duration-500",
@@ -33,7 +34,7 @@ const MainApp = () => {
     9: "top-[10%] left-[15%] transition-all duration-500",
     10: "top-[10%] left-[50%] translate-x-[-50%] transition-all duration-500",
   });
-  const [customTeam, setCustomTeam] = useState([
+  const initialTeam = [
     {
       id: null,
       name: "",
@@ -89,7 +90,8 @@ const MainApp = () => {
       name: "",
       idx: 10,
     },
-  ]);
+  ];
+  const [customTeam, setCustomTeam] = useState(initialTeam);
 
   const getTeams = async (teamId) => {
     setLoadingLineup(true);
@@ -98,8 +100,15 @@ const MainApp = () => {
         `https://lineup-builder-server.onrender.com/team?id=${teamId}`
       );
       const data = await fetchedTeams.json();
-      setTeam(data.players);
 
+      if (!data.players) {
+        alert(`Line up unavailable for this team`);
+        if (team.length < 1) {
+          setTeam(initialTeam)
+        }
+      } else {
+        setTeam(data.players);
+      }
       setSwitchMode("fetched");
       setFormation(data.formation);
       setLineupNotFound(false);
@@ -112,17 +121,19 @@ const MainApp = () => {
       setErrorAlert(error.error);
     }
   };
- 
+
+  console.log(team);
+  
 
   useEffect(() => {
     switch (formation) {
       case "4-3-3":
         setPositions({
           0: "top-[85%] left-[50%] translate-x-[-50%] transition-all duration-500",
-          1: "top-[65%] right-[7%] transition-all duration-500",
+          1: "top-[65%] left-[90%] translate-x-[-50%] transition-all duration-500",
           2: "top-[65%] right-[32%] transition-all duration-500",
           3: "top-[65%] left-[32%] transition-all duration-500",
-          4: "top-[65%] left-[7%] transition-all duration-500",
+          4: "top-[65%] left-[10%] translate-x-[-50%] transition-all duration-500",
           5: "top-[38%] left-[50%] translate-x-[-50%] transition-all duration-500",
           6: "top-[38%] left-[15%] transition-all duration-500",
           7: "top-[10%] right-[15%] transition-all duration-500",
@@ -643,6 +654,7 @@ const MainApp = () => {
           }
         />
         <Route path="/cf" element={<CustomFormation team={team} />} />
+        <Route path="/practice" element={<Practice />} />
       </Routes>
     </div>
   );

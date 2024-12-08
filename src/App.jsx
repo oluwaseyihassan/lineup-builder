@@ -58,18 +58,171 @@ function App({
   const [recentLineups, setRecentLineups] = useState([]);
   const [customFormation, setCustomFormation] = useState("fixed");
   const [customPositions, setCustomPositions] = useState({
-    0: { left: 5, top: 0 },
-    1: { left: 10, top: 0 },
-    2: { left: 15, top: 0 },
-    3: { left: 20, top: 0 },
-    4: { left: 25, top: 0 },
-    5: { left: 30, top: 0 },
-    6: { left: 35, top: 0 },
-    7: { left: 40, top: 0 },
-    8: { left: 45, top: 0 },
-    9: { left: 50, top: 0 },
-    10: { left: 55, top: 0 },
+    0: {
+      left: positions[0]
+        .split(" ")[1]
+        .slice(
+          positions[0].split(" ")[1].indexOf("[") + 1,
+          positions[0].split(" ")[1].indexOf("%")
+        ),
+      top: positions[0]
+        .split(" ")[0]
+        .slice(
+          positions[0].split(" ")[0].indexOf("[") + 1,
+          positions[0].split(" ")[0].indexOf("%")
+        ),
+    },
+    1: {
+      left: positions[1]
+        .split(" ")[1]
+        .slice(
+          positions[1].split(" ")[1].indexOf("[") + 1,
+          positions[1].split(" ")[1].indexOf("%")
+        ),
+      top: positions[1]
+        .split(" ")[0]
+        .slice(
+          positions[1].split(" ")[0].indexOf("[") + 1,
+          positions[1].split(" ")[0].indexOf("%")
+        ),
+    },
+    2: {
+      left: positions[2]
+        .split(" ")[1]
+        .slice(
+          positions[2].split(" ")[1].indexOf("[") + 1,
+          positions[2].split(" ")[1].indexOf("%")
+        ),
+      top: positions[2]
+        .split(" ")[0]
+        .slice(
+          positions[0].split(" ")[0].indexOf("[") + 1,
+          positions[0].split(" ")[0].indexOf("%")
+        ),
+    },
+    3: {
+      left: positions[3]
+        .split(" ")[1]
+        .slice(
+          positions[3].split(" ")[1].indexOf("[") + 1,
+          positions[3].split(" ")[1].indexOf("%")
+        ),
+      top: positions[3]
+        .split(" ")[0]
+        .slice(
+          positions[3].split(" ")[0].indexOf("[") + 1,
+          positions[3].split(" ")[0].indexOf("%")
+        ),
+    },
+    4: {
+      left: positions[4]
+        .split(" ")[1]
+        .slice(
+          positions[4].split(" ")[1].indexOf("[") + 1,
+          positions[4].split(" ")[1].indexOf("%")
+        ),
+      top: positions[4]
+        .split(" ")[0]
+        .slice(
+          positions[4].split(" ")[0].indexOf("[") + 1,
+          positions[4].split(" ")[0].indexOf("%")
+        ),
+    },
+    5: {
+      left: positions[5]
+        .split(" ")[1]
+        .slice(
+          positions[5].split(" ")[1].indexOf("[") + 1,
+          positions[5].split(" ")[1].indexOf("%")
+        ),
+      top: positions[5]
+        .split(" ")[0]
+        .slice(
+          positions[5].split(" ")[0].indexOf("[") + 1,
+          positions[5].split(" ")[0].indexOf("%")
+        ),
+    },
+    6: {
+      left: positions[6]
+        .split(" ")[1]
+        .slice(
+          positions[6].split(" ")[1].indexOf("[") + 1,
+          positions[6].split(" ")[1].indexOf("%")
+        ),
+      top: positions[6]
+        .split(" ")[0]
+        .slice(
+          positions[6].split(" ")[0].indexOf("[") + 1,
+          positions[6].split(" ")[0].indexOf("%")
+        ),
+    },
+    7: {
+      left: positions[7]
+        .split(" ")[1]
+        .slice(
+          positions[7].split(" ")[1].indexOf("[") + 1,
+          positions[7].split(" ")[1].indexOf("%")
+        ),
+      top: positions[7]
+        .split(" ")[0]
+        .slice(
+          positions[7].split(" ")[0].indexOf("[") + 1,
+          positions[7].split(" ")[0].indexOf("%")
+        ),
+    },
+    8: {
+      left: positions[8]
+        .split(" ")[1]
+        .slice(
+          positions[8].split(" ")[1].indexOf("[") + 1,
+          positions[8].split(" ")[1].indexOf("%")
+        ),
+      top: positions[8]
+        .split(" ")[0]
+        .slice(
+          positions[8].split(" ")[0].indexOf("[") + 1,
+          positions[8].split(" ")[0].indexOf("%")
+        ),
+    },
+    9: {
+      left: positions[9]
+        .split(" ")[1]
+        .slice(
+          positions[9].split(" ")[1].indexOf("[") + 1,
+          positions[9].split(" ")[1].indexOf("%")
+        ),
+      top: positions[9]
+        .split(" ")[0]
+        .slice(
+          positions[9].split(" ")[0].indexOf("[") + 1,
+          positions[9].split(" ")[0].indexOf("%")
+        ),
+    },
+    10: {
+      left: positions[10]
+        .split(" ")[1]
+        .slice(
+          positions[10].split(" ")[1].indexOf("[") + 1,
+          positions[10].split(" ")[1].indexOf("%")
+        ),
+      top: positions[10]
+        .split(" ")[0]
+        .slice(
+          positions[10].split(" ")[0].indexOf("[") + 1,
+          positions[10].split(" ")[0].indexOf("%")
+        ),
+    },
   });
+  console.log(
+    positions[1]
+      .split(" ")[1]
+      .slice(
+        positions[1].split(" ")[1].indexOf("[") + 1,
+        positions[1].split(" ")[1].indexOf("%")
+      )
+  );
+  console.log(customPositions);
+  
 
   const componentRef = useRef();
 
@@ -348,7 +501,6 @@ function App({
         );
         if (!response.ok) {
           throw new Error("Failed to delete lineup");
-          
         }
         alert("Lineup deleted successfully");
         setRecentLineups(
@@ -356,7 +508,7 @@ function App({
         );
       } catch (err) {
         console.log(err);
-        alert(err)
+        alert(err);
       }
     }
   };
@@ -557,10 +709,10 @@ function App({
             Start by clicking on an empty player and searching for the player
             you want to add, or by selecting a team to pre-fill and modify.
           </p>
-          <p className=" text-center mt-5">Built by Paragon 😌</p>
+          <p className=" text-center mt-5">Built by Paragon &#x2764;</p>
         </div>
       </div>
-      <div className=" col-span-2 rounded-xl overflow-hidden bg-[#1d1d1d]">
+      <div className=" col-span-2 rounded-xl overflow-hidden bg-[#1d1d1d] relative pb-12 sm:pb-20">
         <div className="  px-4 py-2 flex justify-between items-center">
           <h1 className=" text-[24px] font-semibold text-white text-ellipsis max-w-[70%] overflow-hidden">
             {lineupName ? `${lineupName}'s Lineup` : "LineUp Builder"}
@@ -577,8 +729,10 @@ function App({
               onChange={changeFormation}
               className=" bg-transparent text-[20px] w-fit outline outline-1 rounded-full outline-[#2c2c2c] px-2 text-white focus:bg-[#2C2C2C] cursor-pointer hover:bg-[#2C2C2C] scroll_bar"
             >
-              {options.map((option,i) => (
-                <option key={i} value={option.value}>{option.label}</option>
+              {options.map((option, i) => (
+                <option key={i} value={option.value}>
+                  {option.label}
+                </option>
               ))}
             </select>
           )}
@@ -595,7 +749,9 @@ function App({
               setCustomFormation("fixed");
             }}
             className={`${
-              customFormation === "fixed" ? "bg-green-400 text-black" : "text-white"
+              customFormation === "fixed"
+                ? "bg-green-400 text-black"
+                : "text-white"
             } transition-all duration-200 rounded-lg  w-1/2 text-center cursor-pointer text-[16px] py-1`}
           >
             Choose formation
@@ -605,7 +761,9 @@ function App({
               setCustomFormation("custom");
             }}
             className={`${
-              customFormation === "custom" ? "bg-green-400 text-black" : " text-white"
+              customFormation === "custom"
+                ? "bg-green-400 text-black"
+                : " text-white"
             } transition-all duration-200 rounded-lg  w-1/2 text-center cursor-pointer text-[16px] py-1`}
           >
             Custom formation
@@ -708,7 +866,7 @@ function App({
           customTeam[8].id &&
           customTeam[9].id &&
           customTeam[10].id) ||
-          (team[0] &&
+          (team && team[0] &&
             team[0].id &&
             team[1] &&
             team[1].id &&
@@ -729,7 +887,7 @@ function App({
             team[9] &&
             team[9].id &&
             team[10] &&
-            team[10].id)) && (
+            team[10].id)) ? (
           // <div className=" p-4 flex justify-center gap-4">
           //   <button
           //     className=" px-3 py-1 bg-[#60df6e] rounded-lg"
@@ -751,12 +909,14 @@ function App({
                 savingLineup
                   ? "cursor-not-allowed opacity-30"
                   : "cursor-pointer"
-              } hover:bg-opacity-80 w-full p-2 sm:p-4 bg-[#60df6e] flex justify-center items-center text-lg sm:text-2xl text-black transition-all duration-500`}
+              } hover:bg-opacity-80 w-full p-2 sm:p-4 bg-[#60df6e] flex justify-center items-center text-lg sm:text-2xl text-black transition-all duration-500 absolute bottom-0`}
               onClick={saveLineUp}
             >
               {savingLineup ? <Loading /> : "Save Lineup"}
             </button>
           </div>
+        ) : (
+          <div className=" w-full p-2 sm:p-4 bg-[#60df6e] flex justify-center items-center text-lg sm:text-2xl text-black transition-all duration-500 absolute bottom-0 cursor-not-allowed opacity-30">Lineup incomplete</div>
         )}
       </div>
       <div className="col-span-1">
@@ -770,7 +930,7 @@ function App({
             Start by clicking on an empty player and searching for the player
             you want to add, or by selecting a team to pre-fill and modify.
           </p>
-          <p className=" text-center mt-5">Built by Paragon 😌</p>
+          <p className=" text-center mt-5">Built by Paragon &#x2764;</p>
         </div>
         {recentLineups.length > 0 && (
           <div className=" text-white bg-[#1d1d1d] mt-4 rounded-xl py-4 hidden lg:block  ">
