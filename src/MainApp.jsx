@@ -654,7 +654,7 @@ const MainApp = () => {
           }
         />
         <Route path="/cf" element={<CustomFormation team={team} />} />
-        <Route path="/practice" element={<Practice />} />
+        {/* <Route path="/practice" element={<Practice />} /> */}
       </Routes>
     </div>
   );
