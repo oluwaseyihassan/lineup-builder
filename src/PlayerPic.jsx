@@ -38,9 +38,11 @@ const PlayerPic = ({
 
     if (customFormation === "fixed") {
       const newPositions = { ...positions };
-      const data1 = e.dataTransfer.getData("pos");
+      const data1 = e.dataTransfer.getData("pos") || e.target.dataset.pos;
       const data2 = e.target.dataset.pos;
       // setSwitchMode('custom')
+      console.log(`pos1: ${data1}, pos2: ${data2} `);
+      
 
       setPositions({
         ...positions,

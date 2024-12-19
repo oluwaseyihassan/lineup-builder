@@ -60,13 +60,13 @@ function App({
   const [customPositions, setCustomPositions] = useState({
     0: {
       left: positions[0]
-        .split(" ")[1]
+        ?.split(" ")[1]
         .slice(
           positions[0].split(" ")[1].indexOf("[") + 1,
           positions[0].split(" ")[1].indexOf("%")
         ),
       top: positions[0]
-        .split(" ")[0]
+        ?.split(" ")[0]
         .slice(
           positions[0].split(" ")[0].indexOf("[") + 1,
           positions[0].split(" ")[0].indexOf("%")
@@ -74,13 +74,13 @@ function App({
     },
     1: {
       left: positions[1]
-        .split(" ")[1]
+        ?.split(" ")[1]
         .slice(
           positions[1].split(" ")[1].indexOf("[") + 1,
           positions[1].split(" ")[1].indexOf("%")
         ),
       top: positions[1]
-        .split(" ")[0]
+        ?.split(" ")[0]
         .slice(
           positions[1].split(" ")[0].indexOf("[") + 1,
           positions[1].split(" ")[0].indexOf("%")
@@ -88,13 +88,13 @@ function App({
     },
     2: {
       left: positions[2]
-        .split(" ")[1]
+        ?.split(" ")[1]
         .slice(
           positions[2].split(" ")[1].indexOf("[") + 1,
           positions[2].split(" ")[1].indexOf("%")
         ),
       top: positions[2]
-        .split(" ")[0]
+        ?.split(" ")[0]
         .slice(
           positions[0].split(" ")[0].indexOf("[") + 1,
           positions[0].split(" ")[0].indexOf("%")
@@ -102,13 +102,13 @@ function App({
     },
     3: {
       left: positions[3]
-        .split(" ")[1]
+        ?.split(" ")[1]
         .slice(
           positions[3].split(" ")[1].indexOf("[") + 1,
           positions[3].split(" ")[1].indexOf("%")
         ),
       top: positions[3]
-        .split(" ")[0]
+        ?.split(" ")[0]
         .slice(
           positions[3].split(" ")[0].indexOf("[") + 1,
           positions[3].split(" ")[0].indexOf("%")
@@ -116,13 +116,13 @@ function App({
     },
     4: {
       left: positions[4]
-        .split(" ")[1]
+        ?.split(" ")[1]
         .slice(
           positions[4].split(" ")[1].indexOf("[") + 1,
           positions[4].split(" ")[1].indexOf("%")
         ),
       top: positions[4]
-        .split(" ")[0]
+        ?.split(" ")[0]
         .slice(
           positions[4].split(" ")[0].indexOf("[") + 1,
           positions[4].split(" ")[0].indexOf("%")
@@ -130,13 +130,13 @@ function App({
     },
     5: {
       left: positions[5]
-        .split(" ")[1]
+        ?.split(" ")[1]
         .slice(
           positions[5].split(" ")[1].indexOf("[") + 1,
           positions[5].split(" ")[1].indexOf("%")
         ),
       top: positions[5]
-        .split(" ")[0]
+        ?.split(" ")[0]
         .slice(
           positions[5].split(" ")[0].indexOf("[") + 1,
           positions[5].split(" ")[0].indexOf("%")
@@ -144,13 +144,13 @@ function App({
     },
     6: {
       left: positions[6]
-        .split(" ")[1]
+        ?.split(" ")[1]
         .slice(
           positions[6].split(" ")[1].indexOf("[") + 1,
           positions[6].split(" ")[1].indexOf("%")
         ),
       top: positions[6]
-        .split(" ")[0]
+        ?.split(" ")[0]
         .slice(
           positions[6].split(" ")[0].indexOf("[") + 1,
           positions[6].split(" ")[0].indexOf("%")
@@ -158,13 +158,13 @@ function App({
     },
     7: {
       left: positions[7]
-        .split(" ")[1]
+        ?.split(" ")[1]
         .slice(
           positions[7].split(" ")[1].indexOf("[") + 1,
           positions[7].split(" ")[1].indexOf("%")
         ),
       top: positions[7]
-        .split(" ")[0]
+        ?.split(" ")[0]
         .slice(
           positions[7].split(" ")[0].indexOf("[") + 1,
           positions[7].split(" ")[0].indexOf("%")
@@ -172,13 +172,13 @@ function App({
     },
     8: {
       left: positions[8]
-        .split(" ")[1]
+        ?.split(" ")[1]
         .slice(
           positions[8].split(" ")[1].indexOf("[") + 1,
           positions[8].split(" ")[1].indexOf("%")
         ),
       top: positions[8]
-        .split(" ")[0]
+        ?.split(" ")[0]
         .slice(
           positions[8].split(" ")[0].indexOf("[") + 1,
           positions[8].split(" ")[0].indexOf("%")
@@ -186,13 +186,13 @@ function App({
     },
     9: {
       left: positions[9]
-        .split(" ")[1]
+        ?.split(" ")[1]
         .slice(
           positions[9].split(" ")[1].indexOf("[") + 1,
           positions[9].split(" ")[1].indexOf("%")
         ),
       top: positions[9]
-        .split(" ")[0]
+        ?.split(" ")[0]
         .slice(
           positions[9].split(" ")[0].indexOf("[") + 1,
           positions[9].split(" ")[0].indexOf("%")
@@ -200,13 +200,13 @@ function App({
     },
     10: {
       left: positions[10]
-        .split(" ")[1]
+        ?.split(" ")[1]
         .slice(
           positions[10].split(" ")[1].indexOf("[") + 1,
           positions[10].split(" ")[1].indexOf("%")
         ),
       top: positions[10]
-        .split(" ")[0]
+        ?.split(" ")[0]
         .slice(
           positions[10].split(" ")[0].indexOf("[") + 1,
           positions[10].split(" ")[0].indexOf("%")
@@ -215,7 +215,7 @@ function App({
   });
   console.log(
     positions[1]
-      .split(" ")[1]
+      ?.split(" ")[1]
       .slice(
         positions[1].split(" ")[1].indexOf("[") + 1,
         positions[1].split(" ")[1].indexOf("%")
