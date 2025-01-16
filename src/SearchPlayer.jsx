@@ -402,6 +402,9 @@ const SearchPlayer = ({
             {recentPlayers.length > 0 && (
               <div className=" text-[12px] px-4">Recent</div>
             )}
+            {
+              recentPlayers.length == 0 && <div className=" text-[12px] flex justify-center h-full items-center">No recent players</div>
+            }
 
             <div>
               {recentPlayers.map((r) => (

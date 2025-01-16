@@ -5,6 +5,7 @@ import { Routes, Route } from "react-router-dom";
 import DownloadLineup from "./DownloadLineup";
 import DownloadImage from "./DownloadImage";
 import CustomFormation from "./CustomFormation";
+import AllLineUps from "./AllLineUps";
 // import Practice from "./Practice";
 
 const MainApp = () => {
@@ -654,6 +655,7 @@ const MainApp = () => {
           }
         />
         <Route path="/cf" element={<CustomFormation team={team} />} />
+        <Route path="/all-lineups" element={<AllLineUps />}/>
         {/* <Route path="/practice" element={<Practice />} /> */}
       </Routes>
     </div>
