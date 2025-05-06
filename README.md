@@ -1,6 +1,6 @@
 # Football Lineup Builder
 
-A React application that allows users to create, customize, and download football (soccer) team lineups with ease.
+A React application that allows users to create, customize, and download football team lineups with ease.
 
 ![Lineup Builder App Screenshot](https://res.cloudinary.com/drxjxycnn/image/upload/v1746520918/lineup_builder_app_lqziao.png)
 
@@ -18,7 +18,7 @@ A React application that allows users to create, customize, and download footbal
 Clone the repository and install dependencies:
 
 ```bash
-git clone https://github.com/yourusername/lineup-builder.git
+git clone https://github.com/oluwaseyihassan/lineup-builder.git
 cd lineup-builder
 npm install
 ```
@@ -44,7 +44,7 @@ npm run build
 Preview the production build:
 
 ```bash
-npm run preview
+npm run build
 ```
 
 ## Technologies Used
@@ -77,7 +77,6 @@ This project is configured for deployment on [Vercel](https://vercel.com/).
 
 MIT
 
-```
 
 Made with ❤️ by [oluwaseyi](https://loseyi.vercel.app)
-```
+
