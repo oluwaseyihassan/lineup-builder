@@ -44,7 +44,7 @@ npm run build
 Preview the production build:
 
 ```bash
-npm run build
+npm run preview
 ```
 
 ## Technologies Used
